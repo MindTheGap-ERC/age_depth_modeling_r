@@ -9,6 +9,11 @@ email: n.h.hohmann [at] uu.nl
 Web page: [uu.nl/staff/NHohmann](https://www.uu.nl/staff/NHHohmann)  
 Orcid: [0000-0003-1559-1838](https://orcid.org/0000-0003-1559-1838)
 
+__David De Vleeschouwer__  
+Westfälische Wilhelms-Universität Münster  
+Web page: [www.uni-muenster.de/GeoPalaeontologie/erdsystemforschung/staff/DeVleeschouwer](https://www.uni-muenster.de/GeoPalaeontologie/erdsystemforschung/staff/DeVleeschouwer.html)  
+ORCID: [0000-0002-3323-807X](https://orcid.org/0000-0002-3323-807X)
+
 ## License
 
 Apache 2.0, see LICENSE file for full text
