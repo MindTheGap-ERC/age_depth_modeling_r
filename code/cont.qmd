@@ -1,0 +1,349 @@
+---
+title: "Age-depth modeling in R"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    embed-resources: true
+    bibliography: ../refs/refs.bib
+author: 
+  - Niklas Hohmann
+  - David De Vleeschouwer
+  - Christian Zeeden
+bibliography: references.bib
+---
+
+## modifiedBChron
+
+The package `modifiedBChron` @trayler2019 is a modification of `BChron` @parnell2008 for deep-time usage. `BChron` was originally developed for usage with radiocarbon records, and assumes that each possible chrononlogy is piecewise linear, with a random number of points between dated horizons.
+
+```{R}
+library(modifiedBChron)
+data("SCF") # load data from the Santa Cruz formation
+```
+
+```{R}
+# load the package
+library(modifiedBChron) 
+
+# load the example data (csv of table above)
+
+# run the age model
+age_model <- ageModel(ages = SCF$age,
+                  ageSds = SCF$ageSds,
+                  positions = SCF$position,
+                  ids = SCF$ids,
+                  positionThicknesses = SCF$thickness,
+                  distTypes = SCF$distType,
+                  predictPositions = seq(48.25, 193.50, by = 1),
+                  MC = 10000,  # how many iterations 
+                  burn = 2000) # how many iterations to discard
+```
+Let's plot the resulting model
+```{R}
+modelPlot(model = age_model,
+scale = 3)
+```
+```{r}
+age_predictions <- agePredict(model = age_model, 
+           newPositions = c(57, 120, 150),
+           newPositionThicknesses = c(1, 3, 0.5))
+```
+
+```{r}
+adm = tp_to_adm(t = age_predictions$HDI$`0.5`,
+                h = age_predictions$HDI$newPositions,
+                T_unit = "Myr",
+                L_unit = "m")
+```
+
+### astroBayes: Astrochronology and radioisotopic geochrononlogy
+
+`astroBayes` is an R package for combining astrochronology and radioisotopic geochronology published by @trayler2023.
+
+First, let's load the package and the associated data:
+
+```{R}
+# load package
+library(astroBayes)
+# target frequencies for matching
+# taken from LA04 (prec & obliquity) and LA10d (LA10d)
+data("target_frequencies") 
+# absolute age constraints
+data("radioisotopic_dates")
+# cyclostratigraphic data
+data("cyclostratigraphic_data")
+data("layer_boundaries")
+```
+
+Warning, this code can run for a few minutes
+
+```{R}
+age_model <- astro_bayes_model(geochron_data = dates,
+                               cyclostrat_data = cyclostrat,
+                               target_frequency = target_frequencies,
+                               layer_boundaries = layer_boundaries,
+                               iterations = 10000,
+                               burn = 1000)
+```
+
+The age-depth model can be plotted using
+
+```{R}
+plot(age_model, type = 'age_depth')
+```
+
+estimates for the sedimentation rates can be shown using
+
+```{R}
+plot(age_model, type = 'sed_rate')
+```
+
+To check the match of the age-depth model to the target frequencies, use
+
+```{R}
+plot(age_model, type = 'periodogram')
+```
+
+this will show a periodogram of the data, with the target frequencies shown as dashed vertical lines
+
+To get new ages, use `predict` with a suitable formatted data frame
+
+```{R}
+new_positions <- data.frame(position = c(5, 10, 15), 
+                            thickness = c(1, 0, 1), 
+                            id = c('x', 'y', 'z'))
+predictions <- predict(age_model, new_positions)
+plot(predictions)
+```
+
+#### Example: CIP 2.0 case study
+
+As example for astroBayes, we reproduce the CIP 2.0 case study
+
+```{R}
+cyclostrat        <- read.csv(file = './data/CIP2/cyclostrat_data.csv')
+  target_frequency  <- read.csv(file = './data/CIP2/target_frequency.csv')
+  true_data         <- read.csv(file = './data/CIP2/true_age.csv')
+  layer_boundaries  <- read.csv(file = './data/CIP2/layer_boundaries.csv') 
+
+  date_positions <- true_data[c(125, 350, 700, 950), ]
+  
+  geochron_data  <- # assemble into synthetic geochronology
+    data.frame(age = date_positions$age,
+               age_sd = date_positions$age * 0.015,
+               position = date_positions$position,
+               thickness = 0,
+               id = letters[1:4])  |> 
+    arrange(position)
+
+```
+
+```{R}
+ model <- astro_bayes_model(
+    geochron_data = geochron_data,
+    cyclostrat_data = cyclostrat,
+    target_frequency = target_frequency,
+    layer_boundaries = layer_boundaries,
+    iterations = 10000, 
+    burn = 1000, 
+    method = 'malinverno')
+```
+
+```{R}
+plot(model, type = "age_depth")
+```
+
+## admtools: Age-depth models from sedimentation rates
+
+```{R}
+data=read.csv("data/raw/SbS_XRF_forfactor3.csv",header = T, sep=";")
+```
+
+First, let's clean that data
+
+```{R}
+#### Clean data ####
+Height=data[,c(1)]
+mydata=data[,c(2:23)]
+mydata[is.na(mydata)] <- 0
+MS<-data[,c(1,23)]
+MS=na.omit(MS)
+MSi=astrochron::linterp(dat = MS, dt = 0.02, verbose = FALSE, genplot = FALSE)
+targetE=c(130.7, 123.8, 98.9, 94.9)
+astrochron::bergerPeriods(372, genplot = FALSE)
+targetP=c(19.98, 16.87)
+
+t_ashbed_mean = 372.360 * 1000
+uncertainty_radiometric <- 0.053 # [Ma], 2 sigma around the age
+t_ashbed_sd = uncertainty_radiometric * 1000 / 2 # percival uses 2 sigma
+
+h_ashbed = 1.55
+h_top_lkw = 1.15
+h_bottom_ukw = 3.6
+h_top_ukw = 4.05
+h_f_f_bdry = 4.05
+
+```
+
+```{R}
+etimeOptMS_prec=astrochron::eTimeOpt(MSi,
+                                     win=0.02*100,
+                                     step=0.02*10,
+                                     sedmin=0.1,
+                                     sedmax=0.6, 
+                                     numsed=100,
+                                     linLog=1,
+                                     limit=T,
+                                     fit=1,
+                                     fitModPwr=T,
+                                     flow=NULL,
+                                     fhigh=NULL,
+                                     roll=NULL,
+                                     targetE=targetE,
+                                     targetP=targetP,
+                                     detrend=T,
+                                     ydir=1,
+                                     output=1,
+                                     genplot=F,
+                                     check=T,
+                                     verbose=1)
+```
+
+```{R}
+h_tp = function(){
+  return(h_ashbed)
+}
+
+# absolute age tie point with age from Percival et al 2018
+t_tp_absolute = function(){
+  t = rnorm(1, mean =  - t_ashbed_mean, sd = t_ashbed_sd)
+  return(t)
+}
+
+#  absolute age tie point: U-Pb age without uncertainty
+t_tp_anchor_no_error = function(){
+  return(- t_ashbed_mean)
+}
+```
+
+```{r}
+# extract r^2_opt from eTimeOpt
+fa_prec = admtools::get_data_from_eTimeOpt(etimeOptMS_prec, index = 3)
+# generate sed rate generator
+se_prec = admtools::sed_rate_from_matrix(height = fa_prec$heights,
+                               sedrate = fa_prec$sed_rate / 100, # convert cm/kyr to m/kyr
+                               matrix = fa_prec$results,
+                               mode = "poisson",
+                               rate = rate)
+```
+
+```{R}
+#### estimate ADMs ####
+no_of_rep = 1000
+rate = 3
+adm_prec_abs = admtools::sedrate_to_multiadm(h_tp , 
+                                             t_tp_absolute,
+                                             sed_rate_gen = se_prec,
+                                             h, 
+                                             no_of_rep = no_of_rep )
+adm_prec_abs_no_error = admtools::sedrate_to_multiadm(h_tp ,
+                                                      t_tp_anchor_no_error,
+                                                      sed_rate_gen = se_prec,
+                                                      h, 
+                                                      no_of_rep = no_of_rep )
+```
+
+```{R}
+plot(adm_prec_abs)
+plot(adm_prec_abs_no_error)
+```
+
+## admtools: Age-depth models from tracer values
+
+The `admtools` package [@hohmann_nonparametric_2024] provides another nonstandard way to estimate age-depth models, wich is based on the comparison of observed tracer values (e.g., Pollen, extraterrestrial Helium 3, 210Pb) with assumptions of their flux into the sediment.
+
+As an example, assume you know there is a constant flux of extraterrestrial Helium 3 into the sediment due to accretion of extraterrestrial dust. Then observing elevated 3He values in a section indicates stratigraphic condensation (and thus low sedimentation rates), while observing reduced 3He values indicated stratigraphic dilution (and this increased sedimentation rates). This intuition can be mathematically formalized to construct age-depth models.
+
+To demonstrate this, we reproduce the age-depth model from [@murphy_extraterrestrial_2010] for the Paleocene-Eocene Thermal Maximum (PETM) from Walvis Ridge, IODP Site 1266. This example is taken from @hohmann_nonparametric_2024 @hohmann_2025_15489276
+
+We begin by importing data from the publication
+
+```{R}
+# load data from Murphy et al. https://doi.org/10.1016/j.gca.2010.03.039
+data = read.csv(file = "./data/raw/murphy_et_al_2010_1-s2.0-S0016703710003108-mmc3.csv",
+                header = TRUE,
+                sep = "\t")
+
+# heights
+h = data$Depth..mcd.
+
+# base of clay layer, from Murphy et al., Table 1
+base_clay = 306.78
+# heights where the ages are determined - cm resolution
+h_eval = seq(from = 303.5,
+             to = base_clay,
+             by = 0.01)
+             
+mean_3He_flux = 0.48 # mu based on supplementary materials
+twosigma_3H3_flux = 0.08 # 2 sigma based on supplementary materials
+```
+
+Next, we define the stratigraphic tie points. As we do not have any absolute ages, we construct a floating age-depth model, where time is measured relative to the age of the base of the clay layer. For details on how more complex tie points can be constructed see the documentation in the `admtools` package.
+
+```{R}
+# stratigraphic tie point at the base of the clay layer
+h_tp = function(){
+  return(base_clay)
+}
+# time tie point: measure time relative to the deposition of the base of the clay layer
+t_tp = function(){
+  return(0)
+}
+```
+
+Next we define our assumed and observed 3He fluxes.
+
+```{R}
+# assumed flux in the time domain
+# flux is constant, with an error according to the flux values determined by Murphy et al. (2010)
+time_const_gen_supp = function(){
+  eps = 0.0001
+  r = max(eps,rnorm(1, mean = mean_3He_flux, sd = twosigma_3H3_flux/2)) # murphy et al 2010, pcc/cm^-2/kyr
+  f = approxfun(x = c(-1000, 1000), y = rep(r, 2), rule = 2)
+  return(f)
+}
+```
+
+```{R}
+# 3He flux observed in the stratigraphic domain 
+strat_cont_gen_det = function(){
+  f = approxfun(x = data$Depth..mcd.,
+                y = data$X3HeET..pcc.g...20. * data$DBD..g.cm3. * 100,
+                rule = 2)
+  return(f)
+}
+plot(x = h, 
+     y = strat_cont_gen_det()(h),
+     xlab = "Depth [m]",
+     ylab = "3He flux [pcc/cm^-2/kyr]")
+```
+
+```{R}
+             
+             
+subdiv = 10000 # numeric options for integration
+
+
+adm = admtools::strat_cont_to_multiadm(h_tp = h_tp,
+                               t_tp = t_tp,
+                               strat_cont_gen = strat_cont_gen_det,
+                               time_cont_gen = time_const_gen_supp,
+                               h = h_eval,
+                               subdivisions = subdiv, stop.on.error = FALSE,
+                               no_of_rep = 500)
+```
+
+```{R}
+plot(adm)
+```

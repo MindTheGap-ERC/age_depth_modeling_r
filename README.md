@@ -24,6 +24,24 @@ This workshop is based on
 
 * David De Vleeschouwer, & Christian Zeeden. (2021, May 16). Age Models and Geochronology: An Introduction to Different Age-depth Modelling Approaches. Zenodo. https://doi.org/10.5281/zenodo.4749027 (CC-BY 4.0)
 
+The examples use data and code from
+
+* Murphy, B. H., Farley, K. A., & Zachos, J. C. (2010). An
+    extraterrestrial 3He-based timescale for the Paleocene--Eocene
+    thermal maximum (PETM) from Walvis Ridge, IODP Site 1266. Geochimica
+    et Cosmochimica Acta, 74(17), 5098--5108.
+    <https://doi.org/10.1016/j.gca.2010.03.039>
+* da Silva, A.-C. (2024). Anchoring the Late Devonian mass extinction
+    in absolute time by integrating climatic controls and radio-isotopic
+    dating: Supplementary code (v1.0.0). Zenodo. [DOI:
+    10.5281/zenodo.12516430](https://doi.org/10.5281/zenodo.12516430),
+    In supplement to Da Silva, AC., Sinnesael, M., Claeys, P. et al.
+    Anchoring the Late Devonian mass extinction in absolute time by
+    integrating climatic controls and radio-isotopic dating. Sci Rep 10,
+    12940 (2020). [DOI:
+    10.1038/s41598-020-69097-6](https://doi.org/10.1038/s41598-020-69097-6)
+* Hohmann, N., & Jarochowska, E. (2025). Supplementary data and code for "Nonparametric estimation of age-depth models from sedimentological and stratigraphic data" (v1.1.0). Zenodo. <https://doi.org/10.5281/zenodo.15489276>
+
 ## Funding information
 
 The authors acknowledge the contribution of the CycloNet project, funded by the Research Foundation Flanders (FWO, grant no. W000522N)
