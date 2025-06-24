@@ -35,6 +35,10 @@ We cover three packages: modifiedBChron [@trayler2019] , astroBayes [@trayler202
 
 -   `admtools` provides two methods: ICON and FAM. ICON combines tie point data with estimates on sedimentation rates (e.g. from orbital matching or semiquantitiative data) to construct age-depth models, while FAM matches assumed tracer fluxes with observations on tracer values in the section
 
+### Package installation
+
+The code below assumes you have all three packages installed, plus the `dplyr` package for some data wrangling and `StratPal` for generating synthetic proxy records.
+
 ### Workshop structure
 
 This part of the workshop is a practical, meaning the participants work through the materials on their own pace, and the trainers are available for questions and discussion. You can work through the materials in any order, so feel free to start with a package that seems most relevant to you. To familiarize yourself with the syntax and handling of the packages, a list of tasks is provided at the end of each section. They are not mandatory, but feel free to work through them to deepen your understanding of the functionality.
@@ -52,17 +56,18 @@ The package `modifiedBChron` [@trayler2019] is a modification of `BChron` [@parn
 
 ### Usage
 
-We begin by loading the package and the data from @trayler2019
+We begin by loading the package and the data from @trayler2019. This code is modified from [this repository](https://github.com/robintrayler/modifiedBChron).
 
 ```{R}
 library(modifiedBChron)
 data("SCF") # load data from the Santa Cruz formation
 ```
 
-The age-depth model is estimated using the function `ageModel`. This might take a few minutes to run
+The age-depth model is estimated using the function `ageModel`. This might take a few minutes to run.
 
 ```{r}
 #| results: hide
+#| warning: false
 age_model = ageModel(ages = SCF$age,
                   ageSds = SCF$ageSds,
                   positions = SCF$position,
@@ -190,11 +195,13 @@ hist(diff,
 
 ## astroBayes: Astrochronology and radioisotopic geochrononlogy
 
-`astroBayes` is an R package for combining astrochronology and radioisotopic geochronology published by @trayler2023. It creates age-depth models by simultaneously matching a proxy signal to targe frequencies and absolute radionmetric dates.
+`astroBayes` is an R package for combining astrochronology and radioisotopic geochronology published by @trayler2023. It creates age-depth models by simultaneously matching a proxy signal to targe frequencies and absolute radiometric dates.
 
 ### Usage
 
-First, let"s load the package and the associated data:
+This code is modified from [this repository](https://github.com/robintrayler/astroBayes).
+
+First, let's load the package and the associated data:
 
 ```{r}
 #| warning: false
@@ -237,7 +244,8 @@ plot(age_model, type = "sed_rate")
 
 To check the match of the age-depth model to the target frequencies, use
 
-```{R}
+```{r}
+#| warning: false
 plot(age_model, type = "periodogram")
 ```
 
@@ -337,11 +345,11 @@ The destructive effect of the hiatus is clear at around 1.1 Myr
 
 ### Tasks
 
--   remove the information on the hiatus from the data. How do your estimates change? Compare the periodograms of the data with and without the hiatus. How do your age estimates for the age of 2 m depth change?
+-   Remove the information on the hiatus from the data. How do your estimates change? Compare the periodograms of the data with and without the hiatus. How do your age estimates for the age of 2 m depth change?
 
 ## admtools: Age-depth models from sedimentation rates
 
-The `admtools`package @hohmann_nonparametric_2024 provides two different methods to estimate age-depth models. Here, we focus on the estimation of age-depth models from information on sedimentation rates (e.g., from evolutive methods, or qualitative constraints from sequence stratigraphy). The second methods is discussed in detail below.
+The `admtools`package [@hohmann_nonparametric_2024] provides two different methods to estimate age-depth models. Here, we focus on the estimation of age-depth models from information on sedimentation rates (e.g., from evolutive methods, or qualitative constraints from sequence stratigraphy). The second methods is discussed in detail below.
 
 ### Usage
 
@@ -355,7 +363,9 @@ data=read.csv("../data/raw/SbS_XRF_forfactor3.csv",header = T, sep=";")
 
 First, let"s clean that data and define some constants for the analysis:
 
-```{R}
+```{r}
+#| message: false
+#| warning: false
 Height=data[,c(1)]
 mydata=data[,c(2:23)]
 mydata[is.na(mydata)] = 0
@@ -385,7 +395,7 @@ h_f_f_bdry = 4.05
 
 Here, we foucs only on the case with precession amplitude modulation - for shore eccentricity amplitude modulation see @hohmann_nonparametric_2024. We start by estimating the sedimentation rates using eTimeOpt
 
-```{R}
+```{r}
 etimeOptMS_prec=astrochron::eTimeOpt(MSi,
                                      win=0.02*100,
                                      step=0.02*10,
@@ -406,7 +416,7 @@ etimeOptMS_prec=astrochron::eTimeOpt(MSi,
                                      output=1,
                                      genplot=T,
                                      check=T,
-                                     verbose=1)
+                                     verbose=0)
 ```
 
 This provides us with estimates of r\^2 envelope, power, and their product as a function of sedimentation rate and height. We focus on estimating the age-depth model from the product (third plot)
@@ -465,7 +475,7 @@ The `admtools` package [@hohmann_nonparametric_2024] provides a second way to es
 
 ### Usage
 
-To demonstrate this approach, we reproduce the age-depth model from @murphy_extraterrestrial_2010\]for the Paleocene-Eocene Thermal Maximum (PETM) from Walvis Ridge, IODP Site 1266. This example is taken from @hohmann_nonparametric_2024, code is available under @hohmann_2025_15489276
+To demonstrate this approach, we reproduce the age-depth model from @murphy_extraterrestrial_2010 for the Paleocene-Eocene Thermal Maximum (PETM) from Walvis Ridge, IODP Site 1266. This example is taken from @hohmann_nonparametric_2024, code is available under @hohmann_2025_15489276
 
 We begin by importing data from the publication:
 
@@ -493,7 +503,7 @@ mean_3He_flux = 0.48 # mu based on supplementary materials
 twosigma_3H3_flux = 0.08 # 2 sigma based on supplementary materials from Murphy et al.
 ```
 
-Next, we define the stratigraphic tie points. As we do not have any absolute ages, we construct a floating age-depth model, where time is measured relative to the age of the base of the clay layer. For details on how more complex tie points can be constructed see the documentation in the `admtools` package \[admtools webpage\](https://mindthegap-erc.github.io/admtools/articles/adm_from_trace_cont.html).
+Next, we define the stratigraphic tie points. As we do not have any absolute ages, we construct a floating age-depth model, where time is measured relative to the age of the base of the clay layer. For details on how more complex tie points can be constructed see the documentation in the `admtools` package [webpage](https://mindthegap-erc.github.io/admtools/articles/adm_from_trace_cont.html).
 
 ```{R}
 # stratigraphic tie point at the base of the clay layer
@@ -649,7 +659,7 @@ hist(diff,
 
 This gives us a median duration of the PETM recovery interval of 100 kyr at ODP site 1266.
 
-#### Tasks
+### Tasks
 
 -   What is the duration of the three recovery intervals?
 -   Assume the onset of the clay layer is at exactly 55.9 Ma, with an uncertainty of 0.2 Myr (2 sigma). Add this as a tie point to the analysis, and re-estimate the age-depth model.

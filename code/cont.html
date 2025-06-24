@@ -3110,6 +3110,7 @@ vertical-align: -.125em;
   <li><a href="#age-depth-modeling-in-r" id="toc-age-depth-modeling-in-r" class="nav-link active" data-scroll-target="#age-depth-modeling-in-r">Age-depth modeling in R</a>
   <ul class="collapse">
   <li><a href="#learning-goals" id="toc-learning-goals" class="nav-link" data-scroll-target="#learning-goals">Learning goals</a></li>
+  <li><a href="#package-installation" id="toc-package-installation" class="nav-link" data-scroll-target="#package-installation">Package installation</a></li>
   <li><a href="#workshop-structure" id="toc-workshop-structure" class="nav-link" data-scroll-target="#workshop-structure">Workshop structure</a></li>
   <li><a href="#modifiedbchron" id="toc-modifiedbchron" class="nav-link" data-scroll-target="#modifiedbchron">modifiedBChron</a>
   <ul class="collapse">
@@ -3125,6 +3126,7 @@ vertical-align: -.125em;
   <li><a href="#model-assumptions-1" id="toc-model-assumptions-1" class="nav-link" data-scroll-target="#model-assumptions-1">Model Assumptions</a></li>
   <li><a href="#extracting-ages" id="toc-extracting-ages" class="nav-link" data-scroll-target="#extracting-ages">Extracting ages</a></li>
   <li><a href="#example-cip-2.0-case-study" id="toc-example-cip-2.0-case-study" class="nav-link" data-scroll-target="#example-cip-2.0-case-study">Example: CIP 2.0 case study</a></li>
+  <li><a href="#tasks-1" id="toc-tasks-1" class="nav-link" data-scroll-target="#tasks-1">Tasks</a></li>
   </ul></li>
   <li><a href="#admtools-age-depth-models-from-sedimentation-rates" id="toc-admtools-age-depth-models-from-sedimentation-rates" class="nav-link" data-scroll-target="#admtools-age-depth-models-from-sedimentation-rates">admtools: Age-depth models from sedimentation rates</a>
   <ul class="collapse">
@@ -3135,6 +3137,7 @@ vertical-align: -.125em;
   <li><a href="#usage-3" id="toc-usage-3" class="nav-link" data-scroll-target="#usage-3">Usage</a></li>
   <li><a href="#model-assumptions-2" id="toc-model-assumptions-2" class="nav-link" data-scroll-target="#model-assumptions-2">Model assumptions</a></li>
   <li><a href="#extracting-ages-1" id="toc-extracting-ages-1" class="nav-link" data-scroll-target="#extracting-ages-1">Extracting ages</a></li>
+  <li><a href="#tasks-2" id="toc-tasks-2" class="nav-link" data-scroll-target="#tasks-2">Tasks</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
@@ -3189,6 +3192,10 @@ vertical-align: -.125em;
 <li><p><code>admtools</code> provides two methods: ICON and FAM. ICON combines tie point data with estimates on sedimentation rates (e.g. from orbital matching or semiquantitiative data) to construct age-depth models, while FAM matches assumed tracer fluxes with observations on tracer values in the section</p></li>
 </ul>
 </section>
+<section id="package-installation" class="level3">
+<h3 class="anchored" data-anchor-id="package-installation">Package installation</h3>
+<p>The code below assumes you have all three packages installed, plus the <code>dplyr</code> package for some data wrangling and <code>StratPal</code> for generating synthetic proxy records.</p>
+</section>
 <section id="workshop-structure" class="level3">
 <h3 class="anchored" data-anchor-id="workshop-structure">Workshop structure</h3>
 <p>This part of the workshop is a practical, meaning the participants work through the materials on their own pace, and the trainers are available for questions and discussion. You can work through the materials in any order, so feel free to start with a package that seems most relevant to you. To familiarize yourself with the syntax and handling of the packages, a list of tasks is provided at the end of each section. They are not mandatory, but feel free to work through them to deepen your understanding of the functionality.</p>
@@ -3206,12 +3213,12 @@ vertical-align: -.125em;
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<p>We begin by loading the package and the data from <span class="citation" data-cites="trayler2019">Trayler et al. (<a href="#ref-trayler2019" role="doc-biblioref">2019</a>)</span></p>
+<p>We begin by loading the package and the data from <span class="citation" data-cites="trayler2019">Trayler et al. (<a href="#ref-trayler2019" role="doc-biblioref">2019</a>)</span>. This code is modified from <a href="https://github.com/robintrayler/modifiedBChron">this repository</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modifiedBChron)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;SCF&quot;</span>) <span class="co"># load data from the Santa Cruz formation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The age-depth model is estimated using the function <code>ageModel</code>. This might take a few minutes to run</p>
+<p>The age-depth model is estimated using the function <code>ageModel</code>. This might take a few minutes to run.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>age_model <span class="ot">=</span> <span class="fu">ageModel</span>(<span class="at">ages =</span> SCF<span class="sc">$</span>age,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ageSds =</span> SCF<span class="sc">$</span>ageSds,</span>
@@ -3222,26 +3229,6 @@ vertical-align: -.125em;
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">predictPositions =</span> <span class="fu">seq</span>(<span class="fl">48.25</span>, <span class="fl">193.50</span>, <span class="at">by =</span> <span class="dv">1</span>),</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">MC =</span> <span class="dv">10000</span>,  <span class="co"># how many iterations </span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">burn =</span> <span class="dv">2000</span>) <span class="co"># how many iterations to discard</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values
-Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values
-Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values
-Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values
-Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values
-Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values
-Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values
-Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values
-Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values</code></pre>
-</div>
 </div>
 <p>It takes the following data:</p>
 <ul>
@@ -3253,8 +3240,8 @@ collapsing to unique &#39;x&#39; values</code></pre>
 </ul>
 <p>The age-depth model can be plotted using</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modelPlot</span>(<span class="at">model =</span> age_model,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">scale =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">modelPlot</span>(<span class="at">model =</span> age_model,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">scale =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3272,23 +3259,23 @@ collapsing to unique &#39;x&#39; values</code></pre>
 <h3 class="anchored" data-anchor-id="extracting-ages-and-transforming-proxy-records">Extracting ages and transforming proxy records</h3>
 <p>Ages of new stratigraphic positions can be estimated using <code>agePredict</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate ages every 50 cm, without height uncertainty</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>new_positions <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">49</span>, <span class="at">to =</span> <span class="dv">190</span>, <span class="at">by =</span> <span class="fl">0.5</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>age_predictions <span class="ot">=</span> <span class="fu">agePredict</span>(<span class="at">model =</span> age_model, </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">newPositions =</span> new_positions, <span class="co"># height of new positions</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">newPositionThicknesses =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(new_positions))) <span class="co"># thicknesses</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># estimate ages every 50 cm, without height uncertainty</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>new_positions <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">49</span>, <span class="at">to =</span> <span class="dv">190</span>, <span class="at">by =</span> <span class="fl">0.5</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>age_predictions <span class="ot">=</span> <span class="fu">agePredict</span>(<span class="at">model =</span> age_model, </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">newPositions =</span> new_positions, <span class="co"># height of new positions</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">newPositionThicknesses =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(new_positions))) <span class="co"># thicknesses</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we hand these estimated median ages into the <code>admtools</code> package:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(admtools)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> age_predictions<span class="sc">$</span>HDI<span class="sc">$</span><span class="st">`</span><span class="at">0.5</span><span class="st">`</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">h =</span> age_predictions<span class="sc">$</span>HDI<span class="sc">$</span>newPositions,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">T_unit =</span> <span class="st">&quot;Myr&quot;</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">&quot;m&quot;</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>(<span class="at">label =</span> <span class="st">&quot;Age&quot;</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>()</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Median Age in SCF&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(admtools)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> age_predictions<span class="sc">$</span>HDI<span class="sc">$</span><span class="st">`</span><span class="at">0.5</span><span class="st">`</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">h =</span> age_predictions<span class="sc">$</span>HDI<span class="sc">$</span>newPositions,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">T_unit =</span> <span class="st">&quot;Myr&quot;</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">&quot;m&quot;</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>(<span class="at">label =</span> <span class="st">&quot;Age&quot;</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>()</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Median Age in SCF&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3299,17 +3286,17 @@ collapsing to unique &#39;x&#39; values</code></pre>
 </div>
 <p>As an example proxy record, we simulate a random walk using the <code>StratPal</code> package <span class="citation" data-cites="Hohmann2025_stratpal">(<a href="#ref-Hohmann2025_stratpal" role="doc-biblioref">Niklas Hohmann and Jarochowska 2025a</a>)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(StratPal)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>proxy_record <span class="ot">=</span> StratPal<span class="sc">::</span><span class="fu">random_walk</span>(<span class="at">t =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min_time</span>(adm),</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">to =</span> <span class="fu">max_time</span>(adm),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">by =</span> <span class="fl">0.01</span>),<span class="co"># 10 kyr resolutions</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sigma =</span> <span class="dv">1</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">mu =</span> <span class="dv">1</span>) </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(proxy_record,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Age [Myr]&quot;</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Proxy value&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(StratPal)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>proxy_record <span class="ot">=</span> StratPal<span class="sc">::</span><span class="fu">random_walk</span>(<span class="at">t =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min_time</span>(adm),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">to =</span> <span class="fu">max_time</span>(adm),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">by =</span> <span class="fl">0.01</span>),<span class="co"># 10 kyr resolutions</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sigma =</span> <span class="dv">1</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">mu =</span> <span class="dv">1</span>) </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(proxy_record,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Age [Myr]&quot;</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Proxy value&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3320,12 +3307,12 @@ collapsing to unique &#39;x&#39; values</code></pre>
 </div>
 <p>This proxy record is currently in the time domain, and can be transformed into the stratigraphic domain using <code>time_to_strat</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>proxy_record_height <span class="ot">=</span> <span class="fu">time_to_strat</span>(<span class="at">obj =</span> proxy_record, <span class="at">x =</span> adm)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(proxy_record_height,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">orientation =</span> <span class="st">&quot;du&quot;</span>, <span class="co"># plot up/down</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Proxy value&quot;</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Height [m]&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>proxy_record_height <span class="ot">=</span> <span class="fu">time_to_strat</span>(<span class="at">obj =</span> proxy_record, <span class="at">x =</span> adm)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(proxy_record_height,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">orientation =</span> <span class="st">&quot;du&quot;</span>, <span class="co"># plot up/down</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Proxy value&quot;</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Height [m]&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3337,13 +3324,13 @@ collapsing to unique &#39;x&#39; values</code></pre>
 <p>Here the distorting effects of the age-depth model are clearly visible: the low sedimentation rate at around 80 m (17.2 Ma) results in many short oscillations, while the interval from 140 to 100 meter is stratigraphically diluted, resulting in fewer oscillations than in the time domain.</p>
 <p>We can get the sedimentation rate in the stratigraphic domain from the median age-depth model using <code>sed_rate_l</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> new_positions,</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">abs</span>(<span class="fu">sed_rate_l</span>(adm, new_positions)),</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Height [m]&quot;</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Sedimentation rate [m / Myr]&quot;</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">310</span>),</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Sed. rate from median ADM&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> new_positions,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">abs</span>(<span class="fu">sed_rate_l</span>(adm, new_positions)),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Height [m]&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Sedimentation rate [m / Myr]&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">310</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Sed. rate from median ADM&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3354,16 +3341,16 @@ collapsing to unique &#39;x&#39; values</code></pre>
 </div>
 <p>Let’s say we’re interested in the amount of time recorded between 100 and 120 m height. We can determine this using</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>age_predictions2 <span class="ot">=</span> <span class="fu">agePredict</span>(<span class="at">model =</span> age_model, </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">newPositions =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">120</span>), <span class="co"># height of new positions</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">newPositionThicknesses =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>)) <span class="co"># thicknesses</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>age_predictions2 <span class="ot">=</span> <span class="fu">agePredict</span>(<span class="at">model =</span> age_model, </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">newPositions =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">120</span>), <span class="co"># height of new positions</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">newPositionThicknesses =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>)) <span class="co"># thicknesses</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">=</span> age_predictions2<span class="sc">$</span>raw<span class="sc">$</span>V1 <span class="sc">-</span> age_predictions2<span class="sc">$</span>raw<span class="sc">$</span>V2</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(diff,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Time [Myr]&quot;</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Time between 100 and 120 m&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">=</span> age_predictions2<span class="sc">$</span>raw<span class="sc">$</span>V1 <span class="sc">-</span> age_predictions2<span class="sc">$</span>raw<span class="sc">$</span>V2</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(diff,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Time [Myr]&quot;</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">freq =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Time between 100 and 120 m&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3384,88 +3371,36 @@ collapsing to unique &#39;x&#39; values</code></pre>
 </section>
 <section id="astrobayes-astrochronology-and-radioisotopic-geochrononlogy" class="level2">
 <h2 class="anchored" data-anchor-id="astrobayes-astrochronology-and-radioisotopic-geochrononlogy">astroBayes: Astrochronology and radioisotopic geochrononlogy</h2>
-<p><code>astroBayes</code> is an R package for combining astrochronology and radioisotopic geochronology published by <span class="citation" data-cites="trayler2023">Trayler et al. (<a href="#ref-trayler2023" role="doc-biblioref">2023</a>)</span>. It creates age-depth models by simultaneously matching a proxy signal to targe frequencies and absolute radionmetric dates.</p>
+<p><code>astroBayes</code> is an R package for combining astrochronology and radioisotopic geochronology published by <span class="citation" data-cites="trayler2023">Trayler et al. (<a href="#ref-trayler2023" role="doc-biblioref">2023</a>)</span>. It creates age-depth models by simultaneously matching a proxy signal to targe frequencies and absolute radiometric dates.</p>
 <section id="usage-1" class="level3">
 <h3 class="anchored" data-anchor-id="usage-1">Usage</h3>
-<p>First, let”s load the package and the associated data:</p>
+<p>This code is modified from <a href="https://github.com/robintrayler/astroBayes">this repository</a>.</p>
+<p>First, let’s load the package and the associated data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(astroBayes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;purrr::%@%&#39; by &#39;rlang::%@%&#39; when loading
-&#39;astroBayes&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;purrr::flatten_lgl&#39; by &#39;rlang::flatten_lgl&#39;
-when loading &#39;astroBayes&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;purrr::splice&#39; by &#39;rlang::splice&#39; when
-loading &#39;astroBayes&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;purrr::flatten_chr&#39; by &#39;rlang::flatten_chr&#39;
-when loading &#39;astroBayes&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;purrr::flatten_raw&#39; by &#39;rlang::flatten_raw&#39;
-when loading &#39;astroBayes&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;purrr::flatten&#39; by &#39;rlang::flatten&#39; when
-loading &#39;astroBayes&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;purrr::flatten_dbl&#39; by &#39;rlang::flatten_dbl&#39;
-when loading &#39;astroBayes&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;purrr::invoke&#39; by &#39;rlang::invoke&#39; when
-loading &#39;astroBayes&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;purrr::flatten_int&#39; by &#39;rlang::flatten_int&#39;
-when loading &#39;astroBayes&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: replacing previous import &#39;astrochron::extract&#39; by &#39;tidyr::extract&#39;
-when loading &#39;astroBayes&#39;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># target frequencies for matching</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># taken from LA04 (prec &amp; obliquity) and LA10d (LA10d)</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;target_frequencies&quot;</span>) </span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># absolute age constraints</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># is available as `dates`</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;radioisotopic_dates&quot;</span>)</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># cyclostratigraphic data</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;cyclostratigraphic_data&quot;</span>)</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;layer_boundaries&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(astroBayes)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># target frequencies for matching</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># taken from LA04 (prec &amp; obliquity) and LA10d (LA10d)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;target_frequencies&quot;</span>) </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># absolute age constraints</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># is available as `dates` in the workspace</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;radioisotopic_dates&quot;</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># cyclostratigraphic data</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;cyclostratigraphic_data&quot;</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># boundaries of the stratigraphic layers</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;layer_boundaries&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To construct the age-depth model, pass the data to <code>astro_bayes_model</code>. Warning: the estimation can take a few minutes.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>age_model <span class="ot">=</span> <span class="fu">astro_bayes_model</span>(<span class="at">geochron_data =</span> dates,</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">cyclostrat_data =</span> cyclostrat,</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">target_frequency =</span> target_frequencies,</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">layer_boundaries =</span> layer_boundaries,</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">iterations =</span> <span class="dv">10000</span>,</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">burn =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>initial error checking...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>finished</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Setting initial sedimentation rates to maximum likelihood... 
- (this can take a few minutes)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Staring the MCMC model...</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>age_model <span class="ot">=</span> <span class="fu">astro_bayes_model</span>(<span class="at">geochron_data =</span> dates,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">cyclostrat_data =</span> cyclostrat,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">target_frequency =</span> target_frequencies,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">layer_boundaries =</span> layer_boundaries,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">iterations =</span> <span class="dv">10000</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">burn =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The age-depth model can be plotted using</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(age_model, <span class="at">type =</span> <span class="st">&quot;age_depth&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(age_model, <span class="at">type =</span> <span class="st">&quot;age_depth&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3476,7 +3411,7 @@ when loading &#39;astroBayes&#39;</code></pre>
 </div>
 <p>estimates for the sedimentation rates can be shown using</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(age_model, <span class="at">type =</span> <span class="st">&quot;sed_rate&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(age_model, <span class="at">type =</span> <span class="st">&quot;sed_rate&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3487,15 +3422,7 @@ when loading &#39;astroBayes&#39;</code></pre>
 </div>
 <p>To check the match of the age-depth model to the target frequencies, use</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(age_model, <span class="at">type =</span> <span class="st">&quot;periodogram&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1061 rows containing missing values or values outside the scale range
-(`geom_line()`).
-Removed 1061 rows containing missing values or values outside the scale range
-(`geom_line()`).
-Removed 1061 rows containing missing values or values outside the scale range
-(`geom_line()`).</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(age_model, <span class="at">type =</span> <span class="st">&quot;periodogram&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3504,7 +3431,7 @@ Removed 1061 rows containing missing values or values outside the scale range
 </div>
 </div>
 </div>
-<p>this will show a periodogram of the data, with the target frequencies shown as dashed vertical lines.</p>
+<p>This will show a periodogram of the data, with the target frequencies shown as dashed vertical lines.</p>
 </section>
 <section id="model-assumptions-1" class="level3">
 <h3 class="anchored" data-anchor-id="model-assumptions-1">Model Assumptions</h3>
@@ -3514,11 +3441,11 @@ Removed 1061 rows containing missing values or values outside the scale range
 <h3 class="anchored" data-anchor-id="extracting-ages">Extracting ages</h3>
 <p>To get new ages, use <code>predict</code> with a suitable formatted data frame</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>new_positions <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>), </span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">thickness =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), </span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">id =</span> <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>, <span class="st">&quot;z&quot;</span>))</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">=</span> <span class="fu">predict</span>(age_model, new_positions)</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(predictions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>new_positions <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>), </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">thickness =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>), </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">id =</span> <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>, <span class="st">&quot;z&quot;</span>))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">=</span> <span class="fu">predict</span>(age_model, new_positions)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(predictions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3530,52 +3457,39 @@ Removed 1061 rows containing missing values or values outside the scale range
 </section>
 <section id="example-cip-2.0-case-study" class="level3">
 <h3 class="anchored" data-anchor-id="example-cip-2.0-case-study">Example: CIP 2.0 case study</h3>
-<p>As example for the application of <code>astroBayes</code>, we reproduce the CIP case study number 1 <span class="citation" data-cites="SINNESAEL2019">(<a href="#ref-SINNESAEL2019" role="doc-biblioref">Sinnesael et al. 2019</a>)</span> , code taken from <a href="https://github.com/robintrayler/astroBayes_manuscript">this repository</a>.</p>
+<p>As example for the application of <code>astroBayes</code>, we reproduce the CIP case study number 1 <span class="citation" data-cites="SINNESAEL2019">(<a href="#ref-SINNESAEL2019" role="doc-biblioref">Sinnesael et al. 2019</a>)</span> , code is based on <a href="https://github.com/robintrayler/astroBayes_manuscript">this repository</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>cyclostrat        <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/CIP2/cyclostrat_data.csv&quot;</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>target_frequency  <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/CIP2/target_frequency.csv&quot;</span>)</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>true_data         <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/CIP2/true_age.csv&quot;</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>layer_boundaries  <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/CIP2/layer_boundaries.csv&quot;</span>) </span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get true ages of 4 positions</span></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>date_positions <span class="ot">=</span> true_data[<span class="fu">c</span>(<span class="dv">125</span>, <span class="dv">350</span>, <span class="dv">700</span>, <span class="dv">950</span>), ]</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>geochron_data  <span class="ot">=</span> <span class="co"># assemble into synthetic geochronology</span></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">age =</span> date_positions<span class="sc">$</span>age,</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">age_sd =</span> date_positions<span class="sc">$</span>age <span class="sc">*</span> <span class="fl">0.015</span>,</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> date_positions<span class="sc">$</span>position,</span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">thickness =</span> <span class="dv">0</span>,</span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">id =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])  <span class="sc">|&gt;</span> </span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(position)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>cyclostrat        <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/CIP2/cyclostrat_data.csv&quot;</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>target_frequency  <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/CIP2/target_frequency.csv&quot;</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>true_data         <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/CIP2/true_age.csv&quot;</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>layer_boundaries  <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/CIP2/layer_boundaries.csv&quot;</span>) </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># get true ages of 4 positions</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>date_positions <span class="ot">=</span> true_data[<span class="fu">c</span>(<span class="dv">125</span>, <span class="dv">350</span>, <span class="dv">700</span>, <span class="dv">950</span>), ]</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>geochron_data  <span class="ot">=</span> <span class="co"># assemble into synthetic geochronology</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">age =</span> date_positions<span class="sc">$</span>age,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">age_sd =</span> date_positions<span class="sc">$</span>age <span class="sc">*</span> <span class="fl">0.015</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> date_positions<span class="sc">$</span>position,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">thickness =</span> <span class="dv">0</span>,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">id =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])  <span class="sc">|&gt;</span> </span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(position)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we can estimate the age-depth model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a> model <span class="ot">=</span> <span class="fu">astro_bayes_model</span>(</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">geochron_data =</span> geochron_data,</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cyclostrat_data =</span> cyclostrat,</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target_frequency =</span> target_frequency,</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">layer_boundaries =</span> layer_boundaries,</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">iterations =</span> <span class="dv">10000</span>, </span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">burn =</span> <span class="dv">1000</span>, </span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;malinverno&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>initial error checking...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>finished</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Setting initial sedimentation rates to maximum likelihood... 
- (this can take a few minutes)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Staring the MCMC model...</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a> model <span class="ot">=</span> <span class="fu">astro_bayes_model</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">geochron_data =</span> geochron_data,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cyclostrat_data =</span> cyclostrat,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target_frequency =</span> target_frequency,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">layer_boundaries =</span> layer_boundaries,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">iterations =</span> <span class="dv">10000</span>, </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">burn =</span> <span class="dv">1000</span>, </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;malinverno&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model, <span class="at">type =</span> <span class="st">&quot;age_depth&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model, <span class="at">type =</span> <span class="st">&quot;age_depth&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3586,19 +3500,19 @@ Removed 1061 rows containing missing values or values outside the scale range
 </div>
 <p>Now we extract the median age-depth model</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>new_positions <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">position =</span> cyclostrat<span class="sc">$</span>position, </span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">thickness =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(cyclostrat<span class="sc">$</span>position)), </span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">id =</span> <span class="fu">seq_along</span>(cyclostrat<span class="sc">$</span>position))</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">=</span> <span class="fu">predict</span>(model, new_positions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>new_positions <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">position =</span> cyclostrat<span class="sc">$</span>position, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">thickness =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(cyclostrat<span class="sc">$</span>position)), </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">id =</span> <span class="fu">seq_along</span>(cyclostrat<span class="sc">$</span>position))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>predictions <span class="ot">=</span> <span class="fu">predict</span>(model, new_positions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> predictions<span class="sc">$</span>CI<span class="sc">$</span>median,</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">h =</span> predictions<span class="sc">$</span>CI<span class="sc">$</span>position,</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">&quot;m&quot;</span>,</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">T_unit =</span> <span class="st">&quot;Myr&quot;</span>)</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm)</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>(<span class="at">label =</span> <span class="st">&quot;Age&quot;</span>)</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>(<span class="at">label =</span> <span class="st">&quot;Depth&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> <span class="fu">tp_to_adm</span>(<span class="at">t =</span> predictions<span class="sc">$</span>CI<span class="sc">$</span>median,</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">h =</span> predictions<span class="sc">$</span>CI<span class="sc">$</span>position,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">L_unit =</span> <span class="st">&quot;m&quot;</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">T_unit =</span> <span class="st">&quot;Myr&quot;</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">T_axis_lab</span>(<span class="at">label =</span> <span class="st">&quot;Age&quot;</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">L_axis_lab</span>(<span class="at">label =</span> <span class="st">&quot;Depth&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3609,13 +3523,13 @@ Removed 1061 rows containing missing values or values outside the scale range
 </div>
 <p>Now we can convert the observed cyclostratigraphic signal back into the time domain;</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>cyc_signal <span class="ot">=</span> <span class="fu">list</span>(<span class="at">h =</span> cyclostrat<span class="sc">$</span>position,</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> cyclostrat<span class="sc">$</span>value)</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>cyc_signal_time <span class="ot">=</span> <span class="fu">strat_to_time</span>(cyc_signal, adm)</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cyc_signal_time,</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Age [Myr]&quot;</span>,</span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Value&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cyc_signal <span class="ot">=</span> <span class="fu">list</span>(<span class="at">h =</span> cyclostrat<span class="sc">$</span>position,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> cyclostrat<span class="sc">$</span>value)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>cyc_signal_time <span class="ot">=</span> <span class="fu">strat_to_time</span>(cyc_signal, adm)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(cyc_signal_time,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Age [Myr]&quot;</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Value&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3626,33 +3540,36 @@ Removed 1061 rows containing missing values or values outside the scale range
 </div>
 <p>The destructive effect of the hiatus is clear at around 1.1 Myr</p>
 </section>
+<section id="tasks-1" class="level3">
+<h3 class="anchored" data-anchor-id="tasks-1">Tasks</h3>
+<ul>
+<li>Remove the information on the hiatus from the data. How do your estimates change? Compare the periodograms of the data with and without the hiatus. How do your age estimates for the age of 2 m depth change?</li>
+</ul>
+</section>
 </section>
 <section id="admtools-age-depth-models-from-sedimentation-rates" class="level2">
 <h2 class="anchored" data-anchor-id="admtools-age-depth-models-from-sedimentation-rates">admtools: Age-depth models from sedimentation rates</h2>
-<p>The <code>admtools</code>package <span class="citation" data-cites="hohmann_nonparametric_2024">N. Hohmann et al. (<a href="#ref-hohmann_nonparametric_2024" role="doc-biblioref">2024</a>)</span> provides two different methods to estimate age-depth models. Here, we focus on the estimation of age-depth models from information on sedimentation rates (e.g., from evolutive methods, or qualitative constraints from sequence stratigraphy). The second methods is discussed in detail below.</p>
+<p>The <code>admtools</code>package <span class="citation" data-cites="hohmann_nonparametric_2024">(<a href="#ref-hohmann_nonparametric_2024" role="doc-biblioref">N. Hohmann et al. 2024</a>)</span> provides two different methods to estimate age-depth models. Here, we focus on the estimation of age-depth models from information on sedimentation rates (e.g., from evolutive methods, or qualitative constraints from sequence stratigraphy). The second methods is discussed in detail below.</p>
 <section id="usage-2" class="level3">
 <h3 class="anchored" data-anchor-id="usage-2">Usage</h3>
-<p>We demonstrate the usage of the admtools package by reproducing the example from <span class="citation" data-cites="hohmann_nonparametric_2024">N. Hohmann et al. (<a href="#ref-hohmann_nonparametric_2024" role="doc-biblioref">2024</a>)</span> , which builds on <span class="citation" data-cites="dasilva2020">Da Silva et al. (<a href="#ref-dasilva2020" role="doc-biblioref">2020</a>)</span> (code available in <span class="citation" data-cites="dasilva2024">Silva (<a href="#ref-dasilva2024" role="doc-biblioref">2024</a>)</span>). In this example, first sedimentation rates are estimated using eTimeOpt <span class="citation" data-cites="meyers2019">Meyers (<a href="#ref-meyers2019" role="doc-biblioref">2019</a>)</span>. Then, uncertainties on sedimentation rates are propagated into the age-depth model, which is anchored using dates from <span class="citation" data-cites="percival2018">Percival et al. (<a href="#ref-percival2018" role="doc-biblioref">2018</a>)</span></p>
+<p>We demonstrate the usage of the admtools package by reproducing the example from <span class="citation" data-cites="hohmann_nonparametric_2024">N. Hohmann et al. (<a href="#ref-hohmann_nonparametric_2024" role="doc-biblioref">2024</a>)</span> , which builds on <span class="citation" data-cites="dasilva2020">Da Silva et al. (<a href="#ref-dasilva2020" role="doc-biblioref">2020</a>)</span> (code available in <span class="citation" data-cites="dasilva2024">Da Silva (<a href="#ref-dasilva2024" role="doc-biblioref">2024</a>)</span>). In this example, first sedimentation rates are estimated using eTimeOpt <span class="citation" data-cites="meyers2019">Meyers (<a href="#ref-meyers2019" role="doc-biblioref">2019</a>)</span>. Then, uncertainties on sedimentation rates are propagated into the age-depth model, which is anchored using dates from <span class="citation" data-cites="percival2018">Percival et al. (<a href="#ref-percival2018" role="doc-biblioref">2018</a>)</span></p>
 <p>First, we load the requried data from <span class="citation" data-cites="dasilva2020">Da Silva et al. (<a href="#ref-dasilva2020" role="doc-biblioref">2020</a>)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">&quot;../data/raw/SbS_XRF_forfactor3.csv&quot;</span>,<span class="at">header =</span> T, <span class="at">sep=</span><span class="st">&quot;;&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">&quot;../data/raw/SbS_XRF_forfactor3.csv&quot;</span>,<span class="at">header =</span> T, <span class="at">sep=</span><span class="st">&quot;;&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First, let”s clean that data and define some constants for the analysis:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>Height<span class="ot">=</span>data[,<span class="fu">c</span>(<span class="dv">1</span>)]</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>mydata<span class="ot">=</span>data[,<span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">23</span>)]</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>mydata[<span class="fu">is.na</span>(mydata)] <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># select magnetic susceptibility</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>MS<span class="ot">=</span>data[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">23</span>)]</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>MS<span class="ot">=</span><span class="fu">na.omit</span>(MS)</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>MSi<span class="ot">=</span>astrochron<span class="sc">::</span><span class="fu">linterp</span>(<span class="at">dat =</span> MS, <span class="at">dt =</span> <span class="fl">0.02</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">genplot =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-collapsing to unique &#39;x&#39; values</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># target frequencies for the matching</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>targetE<span class="ot">=</span><span class="fu">c</span>(<span class="fl">130.7</span>, <span class="fl">123.8</span>, <span class="fl">98.9</span>, <span class="fl">94.9</span>)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>astrochron<span class="sc">::</span><span class="fu">bergerPeriods</span>(<span class="dv">372</span>, <span class="at">genplot =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Height<span class="ot">=</span>data[,<span class="fu">c</span>(<span class="dv">1</span>)]</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>mydata<span class="ot">=</span>data[,<span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">23</span>)]</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>mydata[<span class="fu">is.na</span>(mydata)] <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># select magnetic susceptibility</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>MS<span class="ot">=</span>data[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">23</span>)]</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>MS<span class="ot">=</span><span class="fu">na.omit</span>(MS)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>MSi<span class="ot">=</span>astrochron<span class="sc">::</span><span class="fu">linterp</span>(<span class="at">dat =</span> MS, <span class="at">dt =</span> <span class="fl">0.02</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">genplot =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># target frequencies for the matching</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>targetE<span class="ot">=</span><span class="fu">c</span>(<span class="fl">130.7</span>, <span class="fl">123.8</span>, <span class="fl">98.9</span>, <span class="fl">94.9</span>)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>astrochron<span class="sc">::</span><span class="fu">bergerPeriods</span>(<span class="dv">372</span>, <span class="at">genplot =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 ----- COMPUTING PREDICTED PERIODS FOR OBLIQUITY AND PRECESSION -----
@@ -3662,102 +3579,84 @@ collapsing to unique &#39;x&#39; values</code></pre>
      p1= 19.98 
      p2= 16.868 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>targetP<span class="ot">=</span><span class="fu">c</span>(<span class="fl">19.98</span>, <span class="fl">16.87</span>)</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ages and uncertainties from Percival</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>t_ashbed_mean <span class="ot">=</span> <span class="fl">372.360</span> <span class="sc">*</span> <span class="dv">1000</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>uncertainty_radiometric <span class="ot">=</span> <span class="fl">0.053</span> <span class="co"># [Ma], 2 sigma around the age</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>t_ashbed_sd <span class="ot">=</span> uncertainty_radiometric <span class="sc">*</span> <span class="dv">1000</span> <span class="sc">/</span> <span class="dv">2</span> <span class="co"># Percival uses 2 sigma</span></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Heights of the ash beds, lower and upper kellwasser events, and Frasnian-Famennian boundary</span></span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>h_ashbed <span class="ot">=</span> <span class="fl">1.55</span></span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>h_top_lkw <span class="ot">=</span> <span class="fl">1.15</span></span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>h_bottom_ukw <span class="ot">=</span> <span class="fl">3.6</span></span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>h_top_ukw <span class="ot">=</span> <span class="fl">4.05</span></span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>h_f_f_bdry <span class="ot">=</span> <span class="fl">4.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>targetP<span class="ot">=</span><span class="fu">c</span>(<span class="fl">19.98</span>, <span class="fl">16.87</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ages and uncertainties from Percival</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>t_ashbed_mean <span class="ot">=</span> <span class="fl">372.360</span> <span class="sc">*</span> <span class="dv">1000</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>uncertainty_radiometric <span class="ot">=</span> <span class="fl">0.053</span> <span class="co"># [Ma], 2 sigma around the age</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>t_ashbed_sd <span class="ot">=</span> uncertainty_radiometric <span class="sc">*</span> <span class="dv">1000</span> <span class="sc">/</span> <span class="dv">2</span> <span class="co"># Percival uses 2 sigma</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Heights of the ash beds, lower and upper kellwasser events, and Frasnian-Famennian boundary</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>h_ashbed <span class="ot">=</span> <span class="fl">1.55</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>h_top_lkw <span class="ot">=</span> <span class="fl">1.15</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>h_bottom_ukw <span class="ot">=</span> <span class="fl">3.6</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>h_top_ukw <span class="ot">=</span> <span class="fl">4.05</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>h_f_f_bdry <span class="ot">=</span> <span class="fl">4.05</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Here, we foucs only on the case with precession amplitude modulation - for shore eccentricity amplitude modulation see <span class="citation" data-cites="hohmann_nonparametric_2024">N. Hohmann et al. (<a href="#ref-hohmann_nonparametric_2024" role="doc-biblioref">2024</a>)</span>. We start by estimating the sedimentation rates using eTimeOpt</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>etimeOptMS_prec<span class="ot">=</span>astrochron<span class="sc">::</span><span class="fu">eTimeOpt</span>(MSi,</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">win=</span><span class="fl">0.02</span><span class="sc">*</span><span class="dv">100</span>,</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">step=</span><span class="fl">0.02</span><span class="sc">*</span><span class="dv">10</span>,</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sedmin=</span><span class="fl">0.1</span>,</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sedmax=</span><span class="fl">0.6</span>, </span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">numsed=</span><span class="dv">100</span>,</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">linLog=</span><span class="dv">1</span>,</span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">limit=</span>T,</span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">fit=</span><span class="dv">1</span>,</span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">fitModPwr=</span>T,</span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">flow=</span><span class="cn">NULL</span>,</span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">fhigh=</span><span class="cn">NULL</span>,</span>
-<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">roll=</span><span class="cn">NULL</span>,</span>
-<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">targetE=</span>targetE,</span>
-<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">targetP=</span>targetP,</span>
-<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">detrend=</span>T,</span>
-<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">ydir=</span><span class="dv">1</span>,</span>
-<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">output=</span><span class="dv">1</span>,</span>
-<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">genplot=</span>T,</span>
-<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">check=</span>T,</span>
-<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">verbose=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
------ PERFORMING EVOLUTIVE TimeOpt ANALYSIS -----
- * Number of data points in stratigraphic series: 264 
- * Stratigraphic series length (space or time): 5.26 
- * Sampling interval (space or time): 0.02 
-
- * Number of data points per window: 100 
- * Moving window size (space or time): 1.98 
- * Window step points: 9 
- * Window step (space or time): 0.18 
- * Number of windows: 19 
-
- * PLEASE WAIT: Performing Optimizations
-
-0%       25%       50%       75%       100%
-===========================================</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>etimeOptMS_prec<span class="ot">=</span>astrochron<span class="sc">::</span><span class="fu">eTimeOpt</span>(MSi,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">win=</span><span class="fl">0.02</span><span class="sc">*</span><span class="dv">100</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">step=</span><span class="fl">0.02</span><span class="sc">*</span><span class="dv">10</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sedmin=</span><span class="fl">0.1</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sedmax=</span><span class="fl">0.6</span>, </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">numsed=</span><span class="dv">100</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">linLog=</span><span class="dv">1</span>,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">limit=</span>T,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">fit=</span><span class="dv">1</span>,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">fitModPwr=</span>T,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">flow=</span><span class="cn">NULL</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">fhigh=</span><span class="cn">NULL</span>,</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">roll=</span><span class="cn">NULL</span>,</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">targetE=</span>targetE,</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">targetP=</span>targetP,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">detrend=</span>T,</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">ydir=</span><span class="dv">1</span>,</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">output=</span><span class="dv">1</span>,</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">genplot=</span>T,</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">check=</span>T,</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">verbose=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This provides us with estimates of r^2 envelope, power, and their product as a function of sedimentation rate and height. We focus on estimating the age-depth model from the product (third plot)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract r^2_opt from eTimeOpt</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>fa_prec <span class="ot">=</span> admtools<span class="sc">::</span><span class="fu">get_data_from_eTimeOpt</span>(etimeOptMS_prec, <span class="at">index =</span> <span class="dv">3</span>)</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co"># generate sed rate generator</span></span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>rate <span class="ot">=</span> <span class="dv">3</span> <span class="co"># rate parameter: no of changes in sed. rate per stratigraphic unit</span></span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>se_prec <span class="ot">=</span> admtools<span class="sc">::</span><span class="fu">sed_rate_from_matrix</span>(<span class="at">height =</span> fa_prec<span class="sc">$</span>heights,</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>                               <span class="at">sedrate =</span> fa_prec<span class="sc">$</span>sed_rate <span class="sc">/</span> <span class="dv">100</span>, <span class="co"># convert cm/kyr to m/kyr</span></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>                               <span class="at">matrix =</span> fa_prec<span class="sc">$</span>results,</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>                               <span class="at">mode =</span> <span class="st">&quot;poisson&quot;</span>,</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">rate =</span> rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract r^2_opt from eTimeOpt</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>fa_prec <span class="ot">=</span> admtools<span class="sc">::</span><span class="fu">get_data_from_eTimeOpt</span>(etimeOptMS_prec, <span class="at">index =</span> <span class="dv">3</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># generate sed rate generator</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>rate <span class="ot">=</span> <span class="dv">3</span> <span class="co"># rate parameter: no of changes in sed. rate per stratigraphic unit</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>se_prec <span class="ot">=</span> admtools<span class="sc">::</span><span class="fu">sed_rate_from_matrix</span>(<span class="at">height =</span> fa_prec<span class="sc">$</span>heights,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                               <span class="at">sedrate =</span> fa_prec<span class="sc">$</span>sed_rate <span class="sc">/</span> <span class="dv">100</span>, <span class="co"># convert cm/kyr to m/kyr</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                               <span class="at">matrix =</span> fa_prec<span class="sc">$</span>results,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                               <span class="at">mode =</span> <span class="st">&quot;poisson&quot;</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">rate =</span> rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>se_prec</code> is a function that upon each evaluation returns one possible sedimentation rate in the section. Using a Monte Carlo method, this can be converted into an age-depth model.</p>
 <p>Next, we define the stratigraphic tie points.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stratigraphic tie points: height of the tie point</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>h_tp <span class="ot">=</span> <span class="cf">function</span>(){</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(h_ashbed)</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="co"># absolute age tie point with age from Percival et al 2018</span></span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>t_tp_absolute <span class="ot">=</span> <span class="cf">function</span>(){</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span>  <span class="sc">-</span> t_ashbed_mean, <span class="at">sd =</span> t_ashbed_sd)</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(t)</span>
-<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stratigraphic tie points: height of the tie point</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>h_tp <span class="ot">=</span> <span class="cf">function</span>(){</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(h_ashbed)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># absolute age tie point with age from Percival et al 2018</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>t_tp_absolute <span class="ot">=</span> <span class="cf">function</span>(){</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span>  <span class="sc">-</span> t_ashbed_mean, <span class="at">sd =</span> t_ashbed_sd)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(t)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With the information on sedimentation rates and tie points at hand, we can now estimate the age-depth model by calling the function</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>no_of_rep <span class="ot">=</span> <span class="dv">1000</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">=</span> <span class="fu">seq</span>(<span class="fl">1.05</span>, <span class="fl">4.25</span>, <span class="at">by =</span> <span class="fl">0.05</span>) <span class="co"># height to estimate ages - every 5 cm</span></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>adm_prec_abs <span class="ot">=</span> admtools<span class="sc">::</span><span class="fu">sedrate_to_multiadm</span>(h_tp , </span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>                                             t_tp_absolute,</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">sed_rate_gen =</span> se_prec,</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>                                             h, </span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">no_of_rep =</span> no_of_rep )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>no_of_rep <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">=</span> <span class="fu">seq</span>(<span class="fl">1.05</span>, <span class="fl">4.25</span>, <span class="at">by =</span> <span class="fl">0.05</span>) <span class="co"># height to estimate ages - every 5 cm</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>adm_prec_abs <span class="ot">=</span> admtools<span class="sc">::</span><span class="fu">sedrate_to_multiadm</span>(h_tp , </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                                             t_tp_absolute,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">sed_rate_gen =</span> se_prec,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                                             h, </span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">no_of_rep =</span> no_of_rep )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm_prec_abs)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Time BP&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm_prec_abs)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Time BP&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3773,66 +3672,66 @@ collapsing to unique &#39;x&#39; values</code></pre>
 <p>The <code>admtools</code> package <span class="citation" data-cites="hohmann_nonparametric_2024">(<a href="#ref-hohmann_nonparametric_2024" role="doc-biblioref">N. Hohmann et al. 2024</a>)</span> provides a second way to estimate age-depth models, which is based on the comparison of observed tracer values (e.g., Pollen, extraterrestrial Helium 3, 210Pb) with assumptions of their flux into the sediment. This procedure is called FAM for Flux - Assumption Matching.</p>
 <section id="usage-3" class="level3">
 <h3 class="anchored" data-anchor-id="usage-3">Usage</h3>
-<p>To demonstrate this approach, we reproduce the age-depth model from <span class="citation" data-cites="murphy_extraterrestrial_2010">Murphy, Farley, and Zachos (<a href="#ref-murphy_extraterrestrial_2010" role="doc-biblioref">2010</a>)</span>]for the Paleocene-Eocene Thermal Maximum (PETM) from Walvis Ridge, IODP Site 1266. This example is taken from <span class="citation" data-cites="hohmann_nonparametric_2024">N. Hohmann et al. (<a href="#ref-hohmann_nonparametric_2024" role="doc-biblioref">2024</a>)</span>, code is available under <span class="citation" data-cites="hohmann_2025_15489276">Niklas Hohmann and Jarochowska (<a href="#ref-hohmann_2025_15489276" role="doc-biblioref">2025b</a>)</span></p>
+<p>To demonstrate this approach, we reproduce the age-depth model from <span class="citation" data-cites="murphy_extraterrestrial_2010">Murphy, Farley, and Zachos (<a href="#ref-murphy_extraterrestrial_2010" role="doc-biblioref">2010</a>)</span> for the Paleocene-Eocene Thermal Maximum (PETM) from Walvis Ridge, IODP Site 1266. This example is taken from <span class="citation" data-cites="hohmann_nonparametric_2024">N. Hohmann et al. (<a href="#ref-hohmann_nonparametric_2024" role="doc-biblioref">2024</a>)</span>, code is available under <span class="citation" data-cites="hohmann_2025_15489276">Niklas Hohmann and Jarochowska (<a href="#ref-hohmann_2025_15489276" role="doc-biblioref">2025b</a>)</span></p>
 <p>We begin by importing data from the publication:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data from Murphy et al. https://doi.org/10.1016/j.gca.2010.03.039</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/raw/murphy_et_al_2010_1-s2.0-S0016703710003108-mmc3.csv&quot;</span>,</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data from Murphy et al. https://doi.org/10.1016/j.gca.2010.03.039</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;../data/raw/murphy_et_al_2010_1-s2.0-S0016703710003108-mmc3.csv&quot;</span>,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For the analysis, we need some constants:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># heights</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">=</span> data<span class="sc">$</span>Depth..mcd.</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co"># base of clay layer, from Murphy et al., Table 1</span></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>base_clay <span class="ot">=</span> <span class="fl">306.78</span></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="co"># heights where the ages are determined - cm resolution</span></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>h_eval <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fl">303.5</span>,</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">to =</span> base_clay,</span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="fl">0.01</span>)</span>
-<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3He flux mean and uncertainty             </span></span>
-<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>mean_3He_flux <span class="ot">=</span> <span class="fl">0.48</span> <span class="co"># mu based on supplementary materials</span></span>
-<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>twosigma_3H3_flux <span class="ot">=</span> <span class="fl">0.08</span> <span class="co"># 2 sigma based on supplementary materials from Murphy et al.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># heights</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">=</span> data<span class="sc">$</span>Depth..mcd.</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># base of clay layer, from Murphy et al., Table 1</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>base_clay <span class="ot">=</span> <span class="fl">306.78</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># heights where the ages are determined - cm resolution</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>h_eval <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fl">303.5</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">to =</span> base_clay,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3He flux mean and uncertainty             </span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>mean_3He_flux <span class="ot">=</span> <span class="fl">0.48</span> <span class="co"># mu based on supplementary materials</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>twosigma_3H3_flux <span class="ot">=</span> <span class="fl">0.08</span> <span class="co"># 2 sigma based on supplementary materials from Murphy et al.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Next, we define the stratigraphic tie points. As we do not have any absolute ages, we construct a floating age-depth model, where time is measured relative to the age of the base of the clay layer. For details on how more complex tie points can be constructed see the documentation in the <code>admtools</code> package [admtools webpage](https://mindthegap-erc.github.io/admtools/articles/adm_from_trace_cont.html).</p>
+<p>Next, we define the stratigraphic tie points. As we do not have any absolute ages, we construct a floating age-depth model, where time is measured relative to the age of the base of the clay layer. For details on how more complex tie points can be constructed see the documentation in the <code>admtools</code> package <a href="https://mindthegap-erc.github.io/admtools/articles/adm_from_trace_cont.html">webpage</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stratigraphic tie point at the base of the clay layer</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>h_tp <span class="ot">=</span> <span class="cf">function</span>(){</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(base_clay)</span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="co"># time tie point: measure time relative to the deposition of the base of the clay layer</span></span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>t_tp <span class="ot">=</span> <span class="cf">function</span>(){</span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="dv">0</span>)</span>
-<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stratigraphic tie point at the base of the clay layer</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>h_tp <span class="ot">=</span> <span class="cf">function</span>(){</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(base_clay)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># time tie point: measure time relative to the deposition of the base of the clay layer</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>t_tp <span class="ot">=</span> <span class="cf">function</span>(){</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="dv">0</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next we define our assumed and observed 3He fluxes. The assumption made is that the tracer flux in the time domain is constant (but uncertain), so increased observed fluxed in the stratigraphic domain reflect low sedimentation rates. Accumulating this information can used to construct an age-depth model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assumed flux in the time domain</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co"># flux is constant, with an error according to the flux values determined by Murphy et al. (2010)</span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>time_const_gen_supp <span class="ot">=</span> <span class="cf">function</span>(){</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  eps <span class="ot">=</span> <span class="fl">0.0001</span></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">=</span> <span class="fu">max</span>(eps,<span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> mean_3He_flux, <span class="at">sd =</span> twosigma_3H3_flux<span class="sc">/</span><span class="dv">2</span>)) <span class="co"># murphy et al 2010, pcc/cm^-2/kyr</span></span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">=</span> <span class="fu">approxfun</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1000</span>, <span class="dv">1000</span>), <span class="at">y =</span> <span class="fu">rep</span>(r, <span class="dv">2</span>), <span class="at">rule =</span> <span class="dv">2</span>)</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(f)</span>
-<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assumed flux in the time domain</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># flux is constant, with an error according to the flux values determined by Murphy et al. (2010)</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>time_const_gen_supp <span class="ot">=</span> <span class="cf">function</span>(){</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  eps <span class="ot">=</span> <span class="fl">0.0001</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">=</span> <span class="fu">max</span>(eps,<span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> mean_3He_flux, <span class="at">sd =</span> twosigma_3H3_flux<span class="sc">/</span><span class="dv">2</span>)) <span class="co"># murphy et al 2010, pcc/cm^-2/kyr</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">=</span> <span class="fu">approxfun</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1000</span>, <span class="dv">1000</span>), <span class="at">y =</span> <span class="fu">rep</span>(r, <span class="dv">2</span>), <span class="at">rule =</span> <span class="dv">2</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(f)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3He flux observed in the stratigraphic domain </span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Based on data from Murphy et al. 2010</span></span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>strat_cont_gen_det <span class="ot">=</span> <span class="cf">function</span>(){</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">=</span> <span class="fu">approxfun</span>(<span class="at">x =</span> data<span class="sc">$</span>Depth..mcd.,</span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> data<span class="sc">$</span>X3HeET..pcc.g...<span class="fl">20.</span> <span class="sc">*</span> data<span class="sc">$</span>DBD..g.cm3. <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">rule =</span> <span class="dv">2</span>)</span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(f)</span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> h, </span>
-<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">strat_cont_gen_det</span>()(h),</span>
-<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Depth [m]&quot;</span>,</span>
-<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;3He flux [pcc/cm^-2/kyr]&quot;</span>,</span>
-<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Observed 3He flux&quot;</span>,</span>
-<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3He flux observed in the stratigraphic domain </span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Based on data from Murphy et al. 2010</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>strat_cont_gen_det <span class="ot">=</span> <span class="cf">function</span>(){</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">=</span> <span class="fu">approxfun</span>(<span class="at">x =</span> data<span class="sc">$</span>Depth..mcd.,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> data<span class="sc">$</span>X3HeET..pcc.g...<span class="fl">20.</span> <span class="sc">*</span> data<span class="sc">$</span>DBD..g.cm3. <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">rule =</span> <span class="dv">2</span>)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(f)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> h, </span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">strat_cont_gen_det</span>()(h),</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Depth [m]&quot;</span>,</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;3He flux [pcc/cm^-2/kyr]&quot;</span>,</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Observed 3He flux&quot;</span>,</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3844,22 +3743,22 @@ collapsing to unique &#39;x&#39; values</code></pre>
 <p>This already indicates that something interesting is happening: If 3He accumulation is constant in time, the peaks in observed tracer flux correspond to stratigraphic condensation (low sedimentation rates).</p>
 <p>Now we can estimate the age-depth model by calling <code>strat_cont_to_multiadm</code>. This can again take a few minutes to calculate.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># height where the adm is estimated</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>h_est <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">304</span>, base_clay, <span class="at">by =</span> <span class="fl">0.05</span>)         </span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>subdiv <span class="ot">=</span> <span class="dv">1000</span> <span class="co"># numeric options for integration</span></span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> admtools<span class="sc">::</span><span class="fu">strat_cont_to_multiadm</span>(<span class="at">h_tp =</span> h_tp,</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">t_tp =</span> t_tp,</span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">strat_cont_gen =</span> strat_cont_gen_det,</span>
-<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>                               <span class="at">time_cont_gen =</span> time_const_gen_supp,</span>
-<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>                               <span class="at">h =</span> h_est,</span>
-<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>                               <span class="at">subdivisions =</span> subdiv, <span class="at">stop.on.error =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">no_of_rep =</span> <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># height where the adm is estimated</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>h_est <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">304</span>, base_clay, <span class="at">by =</span> <span class="fl">0.05</span>)         </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>subdiv <span class="ot">=</span> <span class="dv">1000</span> <span class="co"># numeric options for integration</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">=</span> admtools<span class="sc">::</span><span class="fu">strat_cont_to_multiadm</span>(<span class="at">h_tp =</span> h_tp,</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>                               <span class="at">t_tp =</span> t_tp,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>                               <span class="at">strat_cont_gen =</span> strat_cont_gen_det,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>                               <span class="at">time_cont_gen =</span> time_const_gen_supp,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>                               <span class="at">h =</span> h_est,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>                               <span class="at">subdivisions =</span> subdiv, <span class="at">stop.on.error =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">no_of_rep =</span> <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This age-depth model can be plotted by calling the standard <code>plot</code> function from R.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Time before clay layer [kyr]&quot;</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>)</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Depth [mbsf]&quot;</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Time before clay layer [kyr]&quot;</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Depth [mbsf]&quot;</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3881,11 +3780,11 @@ collapsing to unique &#39;x&#39; values</code></pre>
 <h4 class="anchored" data-anchor-id="transforming-data">Transforming data</h4>
 <p>First, we extract the median age-depth model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>adm_m <span class="ot">=</span> <span class="fu">median_adm</span>(adm, <span class="at">h =</span> h_est)</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm_m)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Time before clay layer [kyr]&quot;</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>)</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Depth [mbsf]&quot;</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="dv">3</span>)</span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Age-depth model for the PETM at ODP site 1266&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>adm_m <span class="ot">=</span> <span class="fu">median_adm</span>(adm, <span class="at">h =</span> h_est)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm_m)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Time before clay layer [kyr]&quot;</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="dv">3</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Depth [mbsf]&quot;</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="dv">3</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> <span class="st">&quot;Age-depth model for the PETM at ODP site 1266&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3896,11 +3795,11 @@ collapsing to unique &#39;x&#39; values</code></pre>
 </div>
 <p>We can get the sedimentation rate in the stratigraphic domain using <code>sed_rate_l</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h_est, <span class="fu">sed_rate_l</span>(adm_m, h_est) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Time [kyr]&quot;</span>,</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Sedimentation rate [cm/kyr]&quot;</span>,</span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Sedimentation rate at OPD site 1266&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h_est, <span class="fu">sed_rate_l</span>(adm_m, h_est) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Time [kyr]&quot;</span>,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Sedimentation rate [cm/kyr]&quot;</span>,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Sedimentation rate at OPD site 1266&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3912,17 +3811,17 @@ collapsing to unique &#39;x&#39; values</code></pre>
 <p>Note the low sedimentation rate at the base of the clay layer (around 306.8 m) which coincides with the peak of the PETM.</p>
 <p>To study how this condensation affects proxy records, we simulate a synthetic proxy record over 200 kyr using a random walk model</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>proxy_record <span class="ot">=</span> StratPal<span class="sc">::</span><span class="fu">random_walk</span>(<span class="at">t =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>,</span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">to =</span> <span class="dv">250</span>,</span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">by =</span> <span class="dv">1</span>),<span class="co"># 10 kyr resolutions</span></span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sigma =</span> <span class="fl">0.1</span>,</span>
-<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">mu =</span> <span class="fl">0.01</span>) </span>
-<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>proxy_record<span class="sc">$</span>t <span class="ot">=</span> <span class="sc">-</span> proxy_record<span class="sc">$</span>t <span class="co"># reverse time direction</span></span>
-<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(proxy_record,</span>
-<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Time to clay layer [kyr]&quot;</span>,</span>
-<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Proxy value&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>proxy_record <span class="ot">=</span> StratPal<span class="sc">::</span><span class="fu">random_walk</span>(<span class="at">t =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>,</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">to =</span> <span class="dv">250</span>,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">by =</span> <span class="dv">1</span>),<span class="co"># 10 kyr resolutions</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sigma =</span> <span class="fl">0.1</span>,</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">mu =</span> <span class="fl">0.01</span>) </span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>proxy_record<span class="sc">$</span>t <span class="ot">=</span> <span class="sc">-</span> proxy_record<span class="sc">$</span>t <span class="co"># reverse time direction</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(proxy_record,</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Time to clay layer [kyr]&quot;</span>,</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Proxy value&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3933,11 +3832,11 @@ collapsing to unique &#39;x&#39; values</code></pre>
 </div>
 <p>Transforming this record into the stratigraphic domain yields</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>proxy_record_height <span class="ot">=</span> <span class="fu">time_to_strat</span>(proxy_record, adm_m)</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(proxy_record_height,</span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Proxy value&quot;</span>,</span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Height [m]&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>proxy_record_height <span class="ot">=</span> <span class="fu">time_to_strat</span>(proxy_record, adm_m)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(proxy_record_height,</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Proxy value&quot;</span>,</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Height [m]&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3952,20 +3851,20 @@ collapsing to unique &#39;x&#39; values</code></pre>
 <h4 class="anchored" data-anchor-id="duration-of-the-petm">Duration of the PETM</h4>
 <p>Now we extract some durations from the section. The section was subdivided by into multiple intervals, we follow the intervals given by <span class="citation" data-cites="murphy_extraterrestrial_2010">Murphy, Farley, and Zachos (<a href="#ref-murphy_extraterrestrial_2010" role="doc-biblioref">2010</a>)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>clay_layer_top <span class="ot">=</span> <span class="fl">306.15</span></span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>base_recovery <span class="ot">=</span> <span class="fl">306.4</span></span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>recovery_1_top <span class="ot">=</span> <span class="fl">306.15</span> <span class="co"># “Shoulder” δ13C inflection point F</span></span>
-<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>recovery_2_top <span class="ot">=</span> <span class="fl">304.7</span> <span class="co"># δ13C inflection point G</span></span>
-<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>recovery_3_top <span class="ot">=</span> <span class="fl">304.19</span> <span class="co"># End of anomalously high carbonate sedimentation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>clay_layer_top <span class="ot">=</span> <span class="fl">306.15</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>base_recovery <span class="ot">=</span> <span class="fl">306.4</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>recovery_1_top <span class="ot">=</span> <span class="fl">306.15</span> <span class="co"># “Shoulder” δ13C inflection point F</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>recovery_2_top <span class="ot">=</span> <span class="fl">304.7</span> <span class="co"># δ13C inflection point G</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>recovery_3_top <span class="ot">=</span> <span class="fl">304.19</span> <span class="co"># End of anomalously high carbonate sedimentation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We get the durations of the recovery interval by using <code>get_time</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>recovery_times <span class="ot">=</span> <span class="fu">get_time</span>(adm, <span class="at">h =</span> <span class="fu">rev</span>(<span class="fu">c</span>(base_recovery, recovery_3_top)))</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">=</span> <span class="fu">sapply</span>(recovery_times, diff)</span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(diff,</span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Duration PETM recovery interval&quot;</span>,</span>
-<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Duration [kyr]&quot;</span>,</span>
-<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">freq =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>recovery_times <span class="ot">=</span> <span class="fu">get_time</span>(adm, <span class="at">h =</span> <span class="fu">rev</span>(<span class="fu">c</span>(base_recovery, recovery_3_top)))</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>diff <span class="ot">=</span> <span class="fu">sapply</span>(recovery_times, diff)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(diff,</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Duration PETM recovery interval&quot;</span>,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Duration [kyr]&quot;</span>,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">freq =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -3976,14 +3875,14 @@ collapsing to unique &#39;x&#39; values</code></pre>
 </div>
 <p>This gives us a median duration of the PETM recovery interval of 100 kyr at ODP site 1266.</p>
 </section>
-<section id="tasks-1" class="level4">
-<h4 class="anchored" data-anchor-id="tasks-1">Tasks</h4>
+</section>
+<section id="tasks-2" class="level3">
+<h3 class="anchored" data-anchor-id="tasks-2">Tasks</h3>
 <ul>
 <li>What is the duration of the three recovery intervals?</li>
 <li>Assume the onset of the clay layer is at exactly 55.9 Ma, with an uncertainty of 0.2 Myr (2 sigma). Add this as a tie point to the analysis, and re-estimate the age-depth model.</li>
 <li>How does this affect the downstream analyses (e.g., sedimentation rates, median age-depth models, durations)? Which ones are affected, which ones are not? Why?</li>
 </ul>
-</section>
 </section>
 </section>
 <section id="references" class="level2 unnumbered">
@@ -3993,6 +3892,9 @@ collapsing to unique &#39;x&#39; values</code></pre>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-dasilva2024" class="csl-entry" role="listitem">
+Da Silva, Anne-Christine. 2024. <em>Anchoring the Late Devonian Mass Extinction in Absolute Time by Integrating Climatic Controls and Radio-Isotopic Dating: Supplementary Code</em>. Zenodo. <a href="https://doi.org/10.5281/ZENODO.12516430">https://doi.org/10.5281/ZENODO.12516430</a>.
+</div>
 <div id="ref-dasilva2020" class="csl-entry" role="listitem">
 Da Silva, Anne-Christine, Matthias Sinnesael, Philippe Claeys, Joshua H. F. L. Davies, Niels J. de Winter, L. M. E. Percival, Urs Schaltegger, and David De Vleeschouwer. 2020. <span>“Anchoring the Late Devonian Mass Extinction in Absolute Time by Integrating Climatic Controls and Radio-Isotopic Dating.”</span> <em>Scientific Reports</em> 10 (1): 12940. <a href="https://doi.org/10.1038/s41598-020-69097-6">https://doi.org/10.1038/s41598-020-69097-6</a>.
 </div>
@@ -4016,9 +3918,6 @@ Parnell, A. C., J. Haslett, J. R. M. Allen, C. E. Buck, and B. Huntley. 2008. <s
 </div>
 <div id="ref-percival2018" class="csl-entry" role="listitem">
 Percival, L. M. E., J. H. F. L. Davies, U. Schaltegger, D. De Vleeschouwer, A.-C. Da Silva, and K. B. Föllmi. 2018. <span>“Precisely Dating the Frasnian<span></span>Famennian Boundary: Implications for the Cause of the Late Devonian Mass Extinction.”</span> <em>Scientific Reports</em> 8 (1): 9578. <a href="https://doi.org/10.1038/s41598-018-27847-7">https://doi.org/10.1038/s41598-018-27847-7</a>.
-</div>
-<div id="ref-dasilva2024" class="csl-entry" role="listitem">
-Silva, Anne-Christine da. 2024. <em>Anchoring the Late Devonian Mass Extinction in Absolute Time by Integrating Climatic Controls and Radio-Isotopic Dating: Supplementary Code</em>. Zenodo. <a href="https://doi.org/10.5281/ZENODO.12516430">https://doi.org/10.5281/ZENODO.12516430</a>.
 </div>
 <div id="ref-SINNESAEL2019" class="csl-entry" role="listitem">
 Sinnesael, Matthias, David De Vleeschouwer, Christian Zeeden, Sietske J. Batenburg, Anne-Christine Da Silva, Niels J. de Winter, Jaume Dinarès-Turell, et al. 2019. <span>“The Cyclostratigraphy Intercomparison Project (CIP): Consistency, Merits and Pitfalls.”</span> <em>Earth-Science Reviews</em> 199: 102965. https://doi.org/<a href="https://doi.org/10.1016/j.earscirev.2019.102965">https://doi.org/10.1016/j.earscirev.2019.102965</a>.
