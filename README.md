@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15735525.svg)](https://doi.org/10.5281/zenodo.15735525)
 
-Practical for the workshop "Age-depth modeling in R
+Practical for the workshop "Age-depth modeling in R"
 
 ## Authors
 
@@ -28,7 +28,11 @@ Apache 2.0, see LICENSE file for full text
 
 ## References
 
-For a list of references, please see the practical document.
+For a list of references, please see practical.html.
+
+## Usage
+
+Download the repository, and open the `age_depth_modeling_r.Rproj`. This will open the RProject and set all paths correctly. Then open the file `practical.html`, which contains all instructions for the practical. We recommend running your code in a standalone script to make it easier to modify it and trace what code was executed.
 
 ## Repository structure
 
