@@ -48,5 +48,4 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
-code/cont_cache/*
-code/cont_files/*
+practical_cache/*

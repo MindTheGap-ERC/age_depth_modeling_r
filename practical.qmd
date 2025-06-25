@@ -2,9 +2,9 @@
 title: "Age-depth modeling in R"
 format:
   html:
+    embed-resources: true
     toc: true
     toc-depth: 3
-    embed-resources: true
 author: 
   - Niklas Hohmann
   - David De Vleeschouwer
@@ -294,10 +294,10 @@ As example for the application of `astroBayes`, we reproduce the CIP case study 
 ```{R}
 library(dplyr)
 # load data
-cyclostrat        = read.csv(file = "../data/CIP2/cyclostrat_data.csv")
-target_frequency  = read.csv(file = "../data/CIP2/target_frequency.csv")
-true_data         = read.csv(file = "../data/CIP2/true_age.csv")
-layer_boundaries  = read.csv(file = "../data/CIP2/layer_boundaries.csv") 
+cyclostrat        = read.csv(file = "./data/CIP2/cyclostrat_data.csv")
+target_frequency  = read.csv(file = "./data/CIP2/target_frequency.csv")
+true_data         = read.csv(file = "./data/CIP2/true_age.csv")
+layer_boundaries  = read.csv(file = "./data/CIP2/layer_boundaries.csv") 
 
 # get true ages of 4 positions
 date_positions = true_data[c(125, 350, 700, 950), ]
@@ -383,7 +383,7 @@ We demonstrate the usage of the admtools package by reproducing the example from
 First, we load the required data from @dasilva2020
 
 ```{R}
-data=read.csv("../data/raw/SbS_XRF_forfactor3.csv",header = T, sep=";")
+data=read.csv("./data/raw/SbS_XRF_forfactor3.csv",header = T, sep=";")
 ```
 
 First, let's clean that data and define some constants for the analysis:
@@ -540,7 +540,7 @@ We begin by importing data from the publication:
 
 ```{R}
 # load data from Murphy et al. https://doi.org/10.1016/j.gca.2010.03.039
-data = read.csv(file = "../data/raw/murphy_et_al_2010_1-s2.0-S0016703710003108-mmc3.csv",
+data = read.csv(file = "./data/raw/murphy_et_al_2010_1-s2.0-S0016703710003108-mmc3.csv",
                 header = TRUE,
                 sep = "\t")
 ```
