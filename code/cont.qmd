@@ -14,7 +14,7 @@ execute:
   cache: true
 ---
 
-# Age-depth modeling in R
+# Age-depth modeling in R: Practical
 
 These are the materials for the workshop "Age-depth modeling in R", held at the CyloNet meeting in Utrecht on the 26th of June.
 
@@ -37,16 +37,32 @@ We cover three packages: modifiedBChron [@trayler2019] , astroBayes [@trayler202
 
 ### Package installation
 
-The code below assumes you have all three packages installed, plus the `dplyr` package for some data wrangling and `StratPal` for generating synthetic proxy records.
+The code below assumes you have all three packages installed, plus the `dplyr` package for some data wrangling and `StratPal` for generating synthetic proxy records. To install them, run the following code:
+
+```{r}
+#| eval: false
+install.packages("remotes")
+
+install.packages("admtools")
+install.packages("StratPal")
+install.packages("dplyr")
+
+remotes::install_github("robintrayler/modifiedBChron")
+remotes::install_github("robintrayler/astroBayes")
+```
 
 ### Workshop structure
 
-This part of the workshop is a practical, meaning the participants work through the materials on their own pace, and the trainers are available for questions and discussion. You can work through the materials in any order, so feel free to start with a package that seems most relevant to you. To familiarize yourself with the syntax and handling of the packages, a list of tasks is provided at the end of each section. They are not mandatory, but feel free to work through them to deepen your understanding of the functionality.
+This part of the workshop is a practical, meaning the participants work through the materials on their own pace, and the trainers are available for questions and discussion. Estimated time for the practical is 90 minutes. You can work through the materials in any order, so feel free to start with a package that seems most relevant to you. To familiarize yourself with the syntax and handling of the packages, a list of tasks is provided at the end of each section. They are not mandatory, but feel free to work through them to deepen your understanding of the functionality.
 
-20 minutes before workshop end we will come together to discuss insights you had and problems you ran into. Specifically, this part will focus on
+20 minutes before workshop end we will come together to discuss insights you had and problems you ran into. For this part, please think about
 
-1.  What model assumptions are justified for your specific time scale and depositional environment
-2.  What functionality age-depth modeling software should have for you
+1.  What model assumptions are justified for your specific time scale and depositional environment?
+2.  What functionality of age-depth modeling software is most useful for you? What is missing in the ecosystem?
+
+### Further reading
+
+If you want to dive deeper into the mechanics of age-depth modeling, we recommend working through the materials in @david_de_vleeschouwer_2021_4749027. They provide excellent examples on the problems that can arise in age-depth modeling, and step-by-step instructions to build complex age-depth models.
 
 ## modifiedBChron
 
@@ -68,15 +84,15 @@ The age-depth model is estimated using the function `ageModel`. This might take 
 ```{r}
 #| results: hide
 #| warning: false
-age_model = ageModel(ages = SCF$age,
-                  ageSds = SCF$ageSds,
-                  positions = SCF$position,
-                  ids = SCF$ids,
-                  positionThicknesses = SCF$thickness,
-                  distTypes = SCF$distType,
-                  predictPositions = seq(48.25, 193.50, by = 1),
-                  MC = 10000,  # how many iterations 
-                  burn = 2000) # how many iterations to discard
+age_model = modifiedBChron::ageModel(ages = SCF$age,
+                                      ageSds = SCF$ageSds,
+                                      positions = SCF$position,
+                                      ids = SCF$ids,
+                                      positionThicknesses = SCF$thickness,
+                                      distTypes = SCF$distType,
+                                      predictPositions = seq(48.25, 193.50, by = 1),
+                                      MC = 10000,  # how many iterations 
+                                      burn = 2000) # how many iterations to discard
 ```
 
 It takes the following data:
@@ -89,13 +105,15 @@ It takes the following data:
 
 -   `positions`: stratigraphic position of the sample above base of the section
 
--   `positionThickness`: stratigraphic uncertainty of positions as half thickness \* `distType` : `U` or `G` for a uniform distribution or a normal distribution
+-   `positionThickness`: stratigraphic uncertainty of positions as half thickness
+
+-   `distType` : `U` or `G` for a uniform distribution or a normal distribution
 
 The age-depth model can be plotted using
 
 ```{R}
-modelPlot(model = age_model,
-          scale = 5)
+modifiedBChron::modelPlot(model = age_model,
+                          scale = 5)
 ```
 
 ### Model assumptions
@@ -110,22 +128,22 @@ Ages of new stratigraphic positions can be estimated using `agePredict`:
 #| results: hide
 # estimate ages every 50 cm, without height uncertainty
 new_positions = seq(from = 49, to = 190, by = 0.5)
-age_predictions = agePredict(model = age_model, 
-                              newPositions = new_positions, # height of new positions
-                              newPositionThicknesses = rep(0, length(new_positions))) # thicknesses
+age_predictions = modifiedBChron::agePredict(model = age_model, 
+                                              newPositions = new_positions, # height of new positions
+                                              newPositionThicknesses = rep(0, length(new_positions))) # thicknesses
 ```
 
-Now we hand these estimated median ages into the `admtools` package:
+Now we hand these estimated median ages to the `admtools` package:
 
 ```{r}
 library(admtools)
-adm = tp_to_adm(t = age_predictions$HDI$`0.5`,
-                h = age_predictions$HDI$newPositions,
-                T_unit = "Myr",
-                L_unit = "m")
+adm = admtools::tp_to_adm(t = age_predictions$HDI$`0.5`,
+                          h = age_predictions$HDI$newPositions,
+                          T_unit = "Myr",
+                          L_unit = "m")
 plot(adm)
-T_axis_lab(label = "Age")
-L_axis_lab()
+admtools::T_axis_lab(label = "Age")
+admtools::L_axis_lab()
 title(main = "Median Age in SCF")
 ```
 
@@ -142,18 +160,20 @@ proxy_record = StratPal::random_walk(t = seq(from = min_time(adm),
 plot(proxy_record,
      type = "l",
      xlab = "Age [Myr]",
-     ylab = "Proxy value")
+     ylab = "Proxy value",
+     main = "Synthetic proxy record in the time domain")
 ```
 
 This proxy record is currently in the time domain, and can be transformed into the stratigraphic domain using `time_to_strat`:
 
 ```{R}
-proxy_record_height = time_to_strat(obj = proxy_record, x = adm)
+proxy_record_height = admtools::time_to_strat(obj = proxy_record, x = adm)
 plot(proxy_record_height,
      orientation = "du", # plot up/down
      type = "l",
      xlab = "Proxy value",
-     ylab = "Height [m]")
+     ylab = "Height [m]",
+     main = "Synthetic proxy record in the straitgraphic domain")
 ```
 
 Here the distorting effects of the age-depth model are clearly visible: the low sedimentation rate at around 80 m (17.2 Ma) results in many short oscillations, while the interval from 140 to 100 meter is stratigraphically diluted, resulting in fewer oscillations than in the time domain.
@@ -162,7 +182,7 @@ We can get the sedimentation rate in the stratigraphic domain from the median ag
 
 ```{R}
 plot(x = new_positions,
-     y = abs(sed_rate_l(adm, new_positions)),
+     y = abs(admtools::sed_rate_l(adm, new_positions)),
      type = "l",
      xlab = "Height [m]",
      ylab = "Sedimentation rate [m / Myr]",
@@ -174,9 +194,9 @@ Let's say we're interested in the amount of time recorded between 100 and 120 m 
 
 ```{r}
 #| results: hide
-age_predictions2 = agePredict(model = age_model, 
-                               newPositions = c(100, 120), # height of new positions
-                               newPositionThicknesses = rep(0, 2)) # thicknesses
+age_predictions2 = modifiedBChron::agePredict(model = age_model, 
+                                               newPositions = c(100, 120), # height of new positions
+                                               newPositionThicknesses = rep(0, 2)) # thicknesses
 ```
 
 ```{R}
@@ -195,7 +215,7 @@ hist(diff,
 
 ## astroBayes: Astrochronology and radioisotopic geochrononlogy
 
-`astroBayes` is an R package for combining astrochronology and radioisotopic geochronology published by @trayler2023. It creates age-depth models by simultaneously matching a proxy signal to targe frequencies and absolute radiometric dates.
+`astroBayes` is an R package for combining astrochronology and radioisotopic geochronology published by @trayler2023. It creates age-depth models by simultaneously matching a proxy signal to target frequencies and absolute radiometric dates.
 
 ### Usage
 
@@ -222,12 +242,12 @@ To construct the age-depth model, pass the data to `astro_bayes_model`. Warning:
 
 ```{r}
 #| message: false
-age_model = astro_bayes_model(geochron_data = dates,
-                               cyclostrat_data = cyclostrat,
-                               target_frequency = target_frequencies,
-                               layer_boundaries = layer_boundaries,
-                               iterations = 10000,
-                               burn = 1000)
+age_model = astroBayes::astro_bayes_model(geochron_data = dates,
+                                         cyclostrat_data = cyclostrat,
+                                         target_frequency = target_frequencies,
+                                         layer_boundaries = layer_boundaries,
+                                         iterations = 10000,
+                                         burn = 1000)
 ```
 
 The age-depth model can be plotted using
@@ -236,7 +256,7 @@ The age-depth model can be plotted using
 plot(age_model, type = "age_depth")
 ```
 
-estimates for the sedimentation rates can be shown using
+Estimates for the sedimentation rates can be shown using
 
 ```{R}
 plot(age_model, type = "sed_rate")
@@ -253,7 +273,7 @@ This will show a periodogram of the data, with the target frequencies shown as d
 
 ### Model Assumptions
 
-`astroBayes` fits a proxy record (specified by the variable `cyclostrat_data`) to a set of target frequencies (specified by `target_frequency`) and radioisotopic data (specified by `geochron_data`). It assumes constant sedimentation rate (prior specified by `layer_boundaries$sed_min` and `layer_boundaries$sed_max`) over stratigraphic intervals specified by `layer_boundaries$position`, and uses the radioisotopic dates to anchor this age-depth model. The age-depth model can also include hiatus surfaces. For a visual overview, see Figure 1 in @trayler2023
+`astroBayes` fits a proxy record (specified by the variable `cyclostrat_data`) to a set of target frequencies (specified by `target_frequency`) and radioisotopic data (specified by `geochron_data`). It assumes constant sedimentation rate (prior specified by `layer_boundaries$sed_min` and `layer_boundaries$sed_max`) over stratigraphic intervals specified by `layer_boundaries$position`, and uses the radioisotopic dates to anchor this age-depth model. The age-depth model can also include hiatus surfaces. For a visual overview of these parameters, see Figure 1 in @trayler2023
 
 ### Extracting ages
 
@@ -282,7 +302,7 @@ layer_boundaries  = read.csv(file = "../data/CIP2/layer_boundaries.csv")
 # get true ages of 4 positions
 date_positions = true_data[c(125, 350, 700, 950), ]
   
-geochron_data  = # assemble into synthetic geochronology
+geochron_data  = # assemble into synthetic radiometric dates
   data.frame(age = date_positions$age,
              age_sd = date_positions$age * 0.015,
              position = date_positions$position,
@@ -291,19 +311,20 @@ geochron_data  = # assemble into synthetic geochronology
   arrange(position)
 ```
 
-Now we can estimate the age-depth model:
+Now we can estimate the age-depth model (again, this can take a few minutes)
 
 ```{r}
 #| message: false
- model = astro_bayes_model(
-    geochron_data = geochron_data,
-    cyclostrat_data = cyclostrat,
-    target_frequency = target_frequency,
-    layer_boundaries = layer_boundaries,
-    iterations = 10000, 
-    burn = 1000, 
-    method = "malinverno")
+ model = astroBayes::astro_bayes_model(geochron_data = geochron_data,
+                                      cyclostrat_data = cyclostrat,
+                                      target_frequency = target_frequency,
+                                      layer_boundaries = layer_boundaries,
+                                      iterations = 10000, 
+                                      burn = 1000, 
+                                      method = "malinverno")
 ```
+
+The plot immediately shows the hiatus surface at around 6 m:
 
 ```{R}
 plot(model, type = "age_depth")
@@ -318,14 +339,16 @@ new_positions = data.frame(position = cyclostrat$position,
 predictions = predict(model, new_positions)
 ```
 
+and plot it:
+
 ```{R}
-adm = tp_to_adm(t = predictions$CI$median,
-                h = predictions$CI$position,
-                L_unit = "m",
-                T_unit = "Myr")
+adm = admtools::tp_to_adm(t = predictions$CI$median,
+                          h = predictions$CI$position,
+                          L_unit = "m",
+                          T_unit = "Myr")
 plot(adm)
-T_axis_lab(label = "Age")
-L_axis_lab(label = "Depth")
+admtools::T_axis_lab(label = "Age")
+admtools::L_axis_lab(label = "Depth")
 
 ```
 
@@ -334,7 +357,7 @@ Now we can convert the observed cyclostratigraphic signal back into the time dom
 ```{R}
 cyc_signal = list(h = cyclostrat$position,
                   y = cyclostrat$value)
-cyc_signal_time = strat_to_time(cyc_signal, adm)
+cyc_signal_time = admtools::strat_to_time(cyc_signal, adm)
 plot(cyc_signal_time,
      type = "l",
      xlab = "Age [Myr]",
@@ -345,23 +368,25 @@ The destructive effect of the hiatus is clear at around 1.1 Myr
 
 ### Tasks
 
+-   Modify the prior on the sedimentation rate (e.g., broaden or shift the interval). How does that change the estimated age-depth model? What happens if you provide unrealistically high/low sedimentation rates?
+
 -   Remove the information on the hiatus from the data. How do your estimates change? Compare the periodograms of the data with and without the hiatus. How do your age estimates for the age of 2 m depth change?
 
 ## admtools: Age-depth models from sedimentation rates
 
-The `admtools`package [@hohmann_nonparametric_2024] provides two different methods to estimate age-depth models. Here, we focus on the estimation of age-depth models from information on sedimentation rates (e.g., from evolutive methods, or qualitative constraints from sequence stratigraphy). The second methods is discussed in detail below.
+The `admtools`package [@hohmann_nonparametric_2024] provides two different methods to estimate age-depth models. Here, we focus on the estimation of age-depth models from information on sedimentation rates (e.g., from evolutive methods, or qualitative constraints from sequence stratigraphy). The second methods is discussed in detail in the section below.
 
 ### Usage
 
 We demonstrate the usage of the admtools package by reproducing the example from @hohmann_nonparametric_2024 , which builds on @dasilva2020 (code available in @dasilva2024). In this example, first sedimentation rates are estimated using eTimeOpt @meyers2019. Then, uncertainties on sedimentation rates are propagated into the age-depth model, which is anchored using dates from @percival2018
 
-First, we load the requried data from @dasilva2020
+First, we load the required data from @dasilva2020
 
 ```{R}
 data=read.csv("../data/raw/SbS_XRF_forfactor3.csv",header = T, sep=";")
 ```
 
-First, let"s clean that data and define some constants for the analysis:
+First, let's clean that data and define some constants for the analysis:
 
 ```{r}
 #| message: false
@@ -385,7 +410,7 @@ uncertainty_radiometric = 0.053 # [Ma], 2 sigma around the age
 t_ashbed_sd = uncertainty_radiometric * 1000 / 2 # Percival uses 2 sigma
 
 # Heights of the ash beds, lower and upper kellwasser events, and Frasnian-Famennian boundary
-h_ashbed = 1.55
+h_ashbed = 1.55 
 h_top_lkw = 1.15
 h_bottom_ukw = 3.6
 h_top_ukw = 4.05
@@ -393,7 +418,7 @@ h_f_f_bdry = 4.05
 
 ```
 
-Here, we foucs only on the case with precession amplitude modulation - for shore eccentricity amplitude modulation see @hohmann_nonparametric_2024. We start by estimating the sedimentation rates using eTimeOpt
+Here, we focs only on the case with precession amplitude modulation - for short eccentricity amplitude modulation see @hohmann_nonparametric_2024. We start by estimating the sedimentation rates using eTimeOpt
 
 ```{r}
 etimeOptMS_prec=astrochron::eTimeOpt(MSi,
@@ -425,7 +450,7 @@ This provides us with estimates of r\^2 envelope, power, and their product as a 
 # extract r^2_opt from eTimeOpt
 fa_prec = admtools::get_data_from_eTimeOpt(etimeOptMS_prec, index = 3)
 # generate sed rate generator
-rate = 3 # rate parameter: no of changes in sed. rate per stratigraphic unit
+rate = 3 # rate parameter: no. of changes in sed. rate per stratigraphic unit
 
 se_prec = admtools::sed_rate_from_matrix(height = fa_prec$heights,
                                sedrate = fa_prec$sed_rate / 100, # convert cm/kyr to m/kyr
@@ -438,7 +463,7 @@ se_prec = admtools::sed_rate_from_matrix(height = fa_prec$heights,
 
 Next, we define the stratigraphic tie points.
 
-```{R}
+```{r}
 # stratigraphic tie points: height of the tie point
 h_tp = function(){
   return(h_ashbed)
@@ -453,7 +478,7 @@ t_tp_absolute = function(){
 
 With the information on sedimentation rates and tie points at hand, we can now estimate the age-depth model by calling the function
 
-```{R}
+```{r}
 no_of_rep = 1000
 h = seq(1.05, 4.25, by = 0.05) # height to estimate ages - every 5 cm
 adm_prec_abs = admtools::sedrate_to_multiadm(h_tp , 
@@ -463,11 +488,45 @@ adm_prec_abs = admtools::sedrate_to_multiadm(h_tp ,
                                              no_of_rep = no_of_rep )
 ```
 
-```{R}
+```{r}
 plot(adm_prec_abs)
-mtext("Time BP")
-
+mtext("Time BP", side = 1, line = 3)
+mtext("Stratigraphic Position", side = 2, line = 3)
+lines(x = c(-10^9, 0), y = c(h_ashbed, h_ashbed))
 ```
+
+Here the line is the stratigraphic position of the ash layer.
+
+### Model assumptions
+
+A priori, `admtools` assumes that the law of superposition holds, and that there are no age reversals between tie points. However, here we import data from `eTimeOpt` using the `sed_rate_from_matrix` function, which assumes sedimentation rates follow a probability distribution specified by r\^2_opt, and that there are breakpoints following a Poisson process according to the specified `rate` parameter.
+
+### Determining ages
+
+As an application, we determine the age of the Frasnian-Famennian boundary using `get_time`:
+
+```{r}
+ages = admtools::get_time(adm_prec_abs, h = h_f_f_bdry)
+hist(abs(unlist(ages))/1000,
+     xlab = "Age [Ma]",
+     freq = FALSE,
+     main = "Age of F-F boundary")
+```
+
+In addition, we determine the duration of the Upper Kellwasser event
+
+```{r}
+dur = admtools::get_time(adm_prec_abs, h = c(h_top_ukw, h_bottom_ukw))
+duration = sapply(dur, function(x) x[1] - x[2])
+hist(duration,
+     xlab = "Duration [kyr]",
+     freq = FALSE,
+     main = "Duration Upper Kellwasser Event")
+```
+
+### Tasks
+
+-   Modify the time tie point to have no uncertainty. How does this change the shape of the age-depth model? How does this propagate into the downstream analyses (e.g., duration of the Kellwasser events, age of the F-F boundary?
 
 ## admtools: Age-depth models from tracer values
 
@@ -546,7 +605,7 @@ plot(x = h,
      type = "l")
 ```
 
-This already indicates that something interesting is happening: If 3He accumulation is constant in time, the peaks in observed tracer flux correspond to stratigraphic condensation (low sedimentation rates).
+This already indicates that something interesting is happening: If 3He flux is constant in time, the peaks in observed tracer flux correspond to stratigraphic condensation (low sedimentation rates).
 
 Now we can estimate the age-depth model by calling `strat_cont_to_multiadm`. This can again take a few minutes to calculate.
 
@@ -559,11 +618,12 @@ adm = admtools::strat_cont_to_multiadm(h_tp = h_tp,
                                strat_cont_gen = strat_cont_gen_det,
                                time_cont_gen = time_const_gen_supp,
                                h = h_est,
-                               subdivisions = subdiv, stop.on.error = FALSE,
+                               subdivisions = subdiv,
+                               stop.on.error = FALSE,
                                no_of_rep = 500)
 ```
 
-This age-depth model can be plotted by calling the standard `plot` function from R.
+This age-depth model can be plotted by calling the standard `plot` function.
 
 ```{R}
 plot(adm)
@@ -586,7 +646,7 @@ The `adm` object contains a number of realizations of the age-depth model, each 
 First, we extract the median age-depth model:
 
 ```{R}
-adm_m = median_adm(adm, h = h_est)
+adm_m = admtools::median_adm(adm, h = h_est)
 plot(adm_m)
 mtext("Time before clay layer [kyr]", side = 1, line = 3)
 mtext("Depth [mbsf]", side = 2, line = 3)
@@ -596,16 +656,17 @@ title(main = "Age-depth model for the PETM at ODP site 1266")
 We can get the sedimentation rate in the stratigraphic domain using `sed_rate_l`:
 
 ```{R}
-plot(h_est, sed_rate_l(adm_m, h_est) * 100,
+plot(x = h_est, 
+     y = admtools::sed_rate_l(adm_m, h_est) * 100,
      xlab = "Time [kyr]",
      ylab = "Sedimentation rate [cm/kyr]",
      type = "l",
      main = "Sedimentation rate at OPD site 1266")
 ```
 
-Note the low sedimentation rate at the base of the clay layer (around 306.8 m) which coincides with the peak of the PETM.
+Note the low sedimentation rate at the base of the clay layer (around 306.8 m) which coincides with the PETM main interval.
 
-To study how this condensation affects proxy records, we simulate a synthetic proxy record over 200 kyr using a random walk model
+To study how this condensation affects proxy records, we simulate a synthetic proxy record over 200 kyr using a random walk model.
 
 ```{R}
 set.seed(42)
@@ -624,7 +685,7 @@ plot(proxy_record,
 Transforming this record into the stratigraphic domain yields
 
 ```{R}
-proxy_record_height = time_to_strat(proxy_record, adm_m)
+proxy_record_height = admtools::time_to_strat(proxy_record, adm_m)
 plot(proxy_record_height,
      type = "l",
      xlab = "Proxy value",
@@ -648,7 +709,7 @@ recovery_3_top = 304.19 # End of anomalously high carbonate sedimentation
 We get the durations of the recovery interval by using `get_time`:
 
 ```{R}
-recovery_times = get_time(adm, h = rev(c(base_recovery, recovery_3_top)))
+recovery_times = admtools::get_time(adm, h = rev(c(base_recovery, recovery_3_top)))
 diff = sapply(recovery_times, diff)
 hist(diff,
      main = "Duration PETM recovery interval",
@@ -662,6 +723,7 @@ This gives us a median duration of the PETM recovery interval of 100 kyr at ODP 
 ### Tasks
 
 -   What is the duration of the three recovery intervals?
+-   Double the assumed 3He flux. How does that change the estimates of the PETM duration?
 -   Assume the onset of the clay layer is at exactly 55.9 Ma, with an uncertainty of 0.2 Myr (2 sigma). Add this as a tie point to the analysis, and re-estimate the age-depth model.
 -   How does this affect the downstream analyses (e.g., sedimentation rates, median age-depth models, durations)? Which ones are affected, which ones are not? Why?
 
