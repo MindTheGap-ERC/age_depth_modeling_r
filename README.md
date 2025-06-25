@@ -1,5 +1,7 @@
 # age_depth_modeling_r
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15735525.svg)](https://doi.org/10.5281/zenodo.15735525)
+
 Practical for the workshop "Age-depth modeling in R
 
 ## Authors
@@ -15,8 +17,8 @@ Westfälische Wilhelms-Universität Münster
 Web page: [www.uni-muenster.de/GeoPalaeontologie/erdsystemforschung/staff/DeVleeschouwer](https://www.uni-muenster.de/GeoPalaeontologie/erdsystemforschung/staff/DeVleeschouwer.html)  
 ORCID: [0000-0002-3323-807X](https://orcid.org/0000-0002-3323-807X)
 
-__Christian Zeeden__
-LIAG-Institut für Angewandte Geophysik
+__Christian Zeeden__  
+LIAG-Institut für Angewandte Geophysik  
 ORCID: [0000-0002-8617-0443](https://orcid.org/0000-0002-8617-0443)
 
 
@@ -27,6 +29,26 @@ Apache 2.0, see LICENSE file for full text
 ## References
 
 For a list of references, please see the practical document.
+
+## Repository structure
+
+* data: raw data used in the practical
+  * CIP2: data from the cyclostratigraphy intercomparison project, task 2
+  * raw: data from Murphy et al. (2010) and Da Silva et al. (2010) used in the practical
+* .gitignore: untracked files
+* age_depth_modeling_r.Rproj: RProject file
+* LICENSE: Apache  2.0 license text
+* practical.htlm: html file containing the practical
+* practical.qmd: quarto file to render html
+* README: readme file
+* references.bib: references used in the practical
+
+## Citation
+
+If you use materials from this repository, please use
+
+* Hohmann, N., De Vleeschouwer, D., & Zeeden, C. (2025). Age-depth modeling in R (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.15735525
+
 
 ## Funding information
 
