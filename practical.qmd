@@ -16,7 +16,7 @@ execute:
 
 # Age-depth modeling in R: Practical
 
-These are the materials for the workshop "Age-depth modeling in R", held at the CyloNet meeting in Utrecht on the 26th of June.
+These are the materials a workshop on **Age-depth modeling in R**, held at the [CycloNet meeting in Utrecht (June 26th 2025)](https://www.uu.nl/en/research/department-of-earth-sciences/cyclonet-meeting-utrecht) and the [GESEP School 2026](https://dfg-spp-icdp.de/de/forschung/kolloquium/icdp-iodp3-kolloquium-2026/gesep-school-2026) as part of the ICDP-IODP3 Kolloquium in Münster (March 8th to 12th 2026).
 
 ### Learning goals
 
@@ -212,6 +212,50 @@ hist(diff,
 -   Plot the condensation in the section (tip: use `admtools::condensation` )
 -   Add another tie point at around 110 m, and examine how the uncertainties and the downstream analyses change
 -   If the tie point has a high uncertainty (e.g., significant overlap with the tie points above and below), how does the model resolve this? Have a look at the age estimates at the tie point horizons, and compare them with the original uncertainties in the raw data
+
+::: {.callout-note collapse="true"}
+To plot the condensation in the section, we use `admtools::condensaton`:
+```{R}
+plot(x = new_positions,
+     y = abs(admtools::condensation(adm, new_positions)),
+     type = "l",
+     xlab = "Height [m]",
+     ylab = "Condensation [Myr / m]",
+     ylim = c(0, 0.03),
+     main = "Condensation from median ADM")
+```
+
+For the tie point at 110 m, we assume a normally distributed age ("G" for Gaussian) with a mean age of 17.1 Ma and a standard deviation of 0.8 Ma and no height uncertainty:
+
+```{r}
+levels(SCF$ids) = c(levels(SCF$ids), "NewID")
+age_model = modifiedBChron::ageModel(ages = c(SCF$age, 17.1),
+                                      ageSds = c(SCF$ageSds, 0.8),
+                                      positions = c(SCF$position, 110),
+                                      ids = factor(c(as.character(SCF$ids), "newID")),
+                                      positionThicknesses = c(SCF$thickness, 0),
+                                      distTypes = factor(c(as.character(SCF$distType), "G")),
+                                      predictPositions = seq(48.25, 193.50, by = 1),
+                                      MC = 10000,  # how many iterations 
+                                      burn = 2000) # how many iterations to discard
+```
+
+```{r}
+modifiedBChron::modelPlot(model = age_model,
+                          scale = 5)
+```
+
+We focus on the newly introduced height 110 m
+
+```{r}
+new_positions = 110
+age_predictions = modifiedBChron::agePredict(model = age_model, 
+                                              newPositions = new_positions, # height of new positions
+                                              newPositionThicknesses = rep(0, length(new_positions))) # thicknesses
+```
+
+
+:::
 
 ## astroBayes: Astrochronology and radioisotopic geochrononlogy
 
