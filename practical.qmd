@@ -766,9 +766,165 @@ This gives us a median duration of the PETM recovery interval of 100 kyr at ODP 
 
 ### Tasks
 
--   What is the duration of the three recovery intervals?
--   Double the assumed 3He flux. How does that change the estimates of the PETM duration?
--   Assume the onset of the clay layer is at exactly 55.9 Ma, with an uncertainty of 0.2 Myr (2 sigma). Add this as a tie point to the analysis, and re-estimate the age-depth model.
--   How does this affect the downstream analyses (e.g., sedimentation rates, median age-depth models, durations)? Which ones are affected, which ones are not? Why?
+1.   What is the duration of the three recovery intervals?
+2.   Double the assumed 3He flux. How does that change the estimates of the PETM duration?
+3.   Assume the onset of the clay layer is at exactly 55.9 Ma, with an uncertainty of 0.2 Myr (2 sigma). Add this as a tie point to the analysis, and re-estimate the age-depth model.
+4.   How does this affect the downstream analyses (e.g., sedimentation rates, median age-depth models, durations)? Which ones are affected, which ones are not? Why?
+
+### Solutions
+
+::: {.callout-tip collapse="true"}
+#### Solution task 1
+
+Task: What is the duration of the three recovery intervals?
+
+To calculate the duration of the the three recovery intervals, we reuse the code above and modify the stratigraphic interval examined:
+
+```{r}
+# 1st recover interval
+recovery_interval_1 = c(base_recovery, recovery_1_top)
+recovery_times = admtools::get_time(adm, h = rev(recovery_interval_1))
+diff = sapply(recovery_times, diff)
+hist(diff,
+     main = "Duration PETM recovery interval 1",
+     xlab = "Duration [kyr]",
+     freq = FALSE)
+
+```
+```{r}
+# 2nd recover interval
+recovery_interval_2 = c(recovery_1_top, recovery_2_top)
+recovery_times = admtools::get_time(adm, h = rev(recovery_interval_2))
+diff = sapply(recovery_times, diff)
+hist(diff,
+     main = "Duration PETM recovery interval 2",
+     xlab = "Duration [kyr]",
+     freq = FALSE)
+
+```
+
+```{r}
+# 3rd recovery interval
+recovery_interval_3 = c(recovery_2_top, recovery_3_top)
+recovery_times = admtools::get_time(adm, h = rev(recovery_interval_3))
+diff = sapply(recovery_times, diff)
+hist(diff,
+     main = "Duration PETM recovery interval 3",
+     xlab = "Duration [kyr]",
+     freq = FALSE)
+
+```
+
+:::
+
+::: {.callout-tip collapse="true"}
+
+#### Solution task 2
+
+Task: Double the assumed 3He flux. How does that change the estimates of the PETM duration?
+
+To model this, we multiply the initially modeled 3He flux by 2, and rerun the age-depth model:
+```{r}
+double_mean_3He_flux = 2 * mean_3He_flux
+time_const_gen_supp_doubled = function(){
+  eps = 0.0001
+  r = max(eps,rnorm(1, mean = double_mean_3He_flux, sd = twosigma_3H3_flux/2)) # murphy et al 2010, pcc/cm^-2/kyr
+  f = approxfun(x = c(-1000, 1000), y = rep(r, 2), rule = 2)
+  return(f)
+}
+
+adm_doubled_flux = admtools::strat_cont_to_multiadm(h_tp = h_tp,
+                               t_tp = t_tp,
+                               strat_cont_gen = strat_cont_gen_det,
+                               time_cont_gen = time_const_gen_supp_doubled,
+                               h = h_est,
+                               subdivisions = subdiv,
+                               stop.on.error = FALSE,
+                               no_of_rep = 500)
+```
+
+Plotting it again, it becomes immediately obvious that duration of the covered age-depth model has halved:
+
+```{R}
+plot(adm_doubled_flux)
+mtext("Time before clay layer [kyr]", side = 1, line = 3)
+mtext("Depth [mbsf]", side = 2, line = 3)
+```
+Extracting the durations, we see that the estimated recovery duration has also halved:
+
+```{R}
+recovery_times = admtools::get_time(adm_doubled_flux, h = rev(c(base_recovery, recovery_3_top)))
+diff = sapply(recovery_times, diff)
+hist(diff,
+     main = "Duration PETM recovery interval, halved 3He flux",
+     xlab = "Duration [kyr]",
+     freq = FALSE)
+
+```
+
+:::
+
+
+::: {.callout-tip collapse="true"}
+#### Solution task 3
+
+Task: Assume the onset of the clay layer is at exactly 55.9 Ma, with an uncertainty of 0.2 Myr (2 sigma). Add this as a tie point to the analysis, and re-estimate the age-depth model.
+
+For this, we modify the tie point age to match the age assumptions:
+
+```{r}
+t_tp_mod = function(){
+  x = rnorm(1, mean = -55900, sd = 100) # unit conversion into kyr & 1 sigma!
+  return(x)
+}
+```
+
+
+Now we can re-estimate the age-depth model
+
+```{R}
+# height where the adm is estimated
+h_est = seq(304, base_clay, by = 0.05)         
+subdiv = 1000 # numeric options for integration
+adm_t_tp_mod = admtools::strat_cont_to_multiadm(h_tp = h_tp,
+                               t_tp = t_tp_mod,
+                               strat_cont_gen = strat_cont_gen_det,
+                               time_cont_gen = time_const_gen_supp,
+                               h = h_est,
+                               subdivisions = subdiv,
+                               stop.on.error = FALSE,
+                               no_of_rep = 500)
+```
+
+and plot it:
+
+```{R}
+plot(adm_t_tp_mod)
+mtext("Time before present [kyr]", side = 1, line = 3)
+mtext("Depth [mbsf]", side = 2, line = 3)
+title(main = "ADM in absolute age")
+```
+Not the high uncertainty in the age-depth model now. This uncertainty is dominated by the uncertainty at the tie point rather the uncertainty introduced by the 3He measurements or the fluctuations in 3He flux.
+However, calculating the duration of the PETM recovery interval shows that it remains identical: The uncertainty of the tie point does not propagate into durations.
+
+```{r}
+recovery_times = admtools::get_time(adm_t_tp_mod, h = rev(c(base_recovery, recovery_3_top)))
+diff = sapply(recovery_times, diff)
+hist(diff,
+     main = "Duration PETM recovery interval",
+     xlab = "Duration [kyr]",
+     freq = FALSE)
+```
+:::
+
+::: {.callout-tip collapse="true"}
+#### Solution task 4
+
+Task: How does this affect the downstream analyses (e.g., sedimentation rates, median age-depth models, durations)? Which ones are affected, which ones are not? Why?
+
+The uncertainty of the tie point only matters for the absolute age of events, e.g., when the second recovery interval started.
+
+The median age-depth model is only shifted by the median absolute age, and all analyses that are based on durations (e.g., duration of the recovery intervals) are not affected because the uncertainty of the tie point cancels out.
+:::
 
 ## References
