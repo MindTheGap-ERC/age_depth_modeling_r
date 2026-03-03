@@ -587,7 +587,10 @@ mydata[is.na(mydata)] = 0
 # select magnetic susceptibility
 MS=data[,c(1,23)]
 MS=na.omit(MS)
-MSi=astrochron::linterp(dat = MS, dt = 0.02, verbose = FALSE, genplot = FALSE)
+MSi=astrochron::linterp(dat = MS,
+                        dt = 0.02,
+                        verbose = FALSE,
+                        genplot = FALSE)
 
 # target frequencies for the matching
 targetE=c(130.7, 123.8, 98.9, 94.9)
@@ -605,7 +608,6 @@ h_top_lkw = 1.15
 h_bottom_ukw = 3.6
 h_top_ukw = 4.05
 h_f_f_bdry = 4.05
-
 ```
 
 Here, we focs only on the case with precession amplitude modulation - for short eccentricity amplitude modulation see @hohmann_nonparametric_2024. We start by estimating the sedimentation rates using eTimeOpt
@@ -643,10 +645,10 @@ fa_prec = admtools::get_data_from_eTimeOpt(etimeOptMS_prec, index = 3)
 rate = 3 # rate parameter: no. of changes in sed. rate per stratigraphic unit
 
 se_prec = admtools::sed_rate_from_matrix(height = fa_prec$heights,
-                               sedrate = fa_prec$sed_rate / 100, # convert cm/kyr to m/kyr
-                               matrix = fa_prec$results,
-                               mode = "poisson",
-                               rate = rate)
+                                         sedrate = fa_prec$sed_rate / 100, # convert cm/kyr to m/kyr
+                                         matrix = fa_prec$results,
+                                         mode = "poisson",
+                                         rate = rate)
 ```
 
 `se_prec` is a function that upon each evaluation returns one possible sedimentation rate in the section. Using a Monte Carlo method, this can be converted into an age-depth model.
@@ -716,11 +718,12 @@ hist(duration,
 
 ### Tasks
 
--   Modify the time tie point to have no uncertainty. How does this change the shape of the age-depth model? How does this propagate into the downstream analyses (e.g., duration of the Kellwasser events, age of the F-F boundary)?
+1.   Modify the time tie point to have no uncertainty. How does this change the shape of the age-depth model? How does this propagate into the downstream analyses (e.g., duration of the Kellwasser events, age of the F-F boundary)?
 
 ### Solutions
 
 ::: {.callout-tip collapse="true"}
+#### Solution task 1
 Task: Modify the time tie point to have no uncertainty. How does this change the shape of the age-depth model? How does this propagate into the downstream analyses (e.g., duration of the Kellwasser events, age of the F-F boundary)?
 
 We keep the same mean age, but remove all uncertainty:
